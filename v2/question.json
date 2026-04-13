@@ -488,6 +488,214 @@
       "code": "from time import perf_counter\n\ndef LinearSearch(A, K):\n    for i in range(len(A)):\n        if A[i] == K:\n            return i\n    return -1\n\nA = [3, 1, 0, 10, 13, 16, 9, 7, 5, 11]\n\nt1 = perf_counter()\n# ....................................\nt2 = perf_counter()\n\nprint(\"Thời gian tìm kiếm tuần tự: \", t2 - t1)",
       "options": ["A. TKTT(A,9).", "B. LinearSearch(A).", "C. LinearSearch(A,9).", "D. linearsearch(A,9)."],
       "answer": "C"
+    },
+    {
+      "number": 81,
+      "question": "Bài 17. Câu 1. Cấu trúc dữ liệu mảng một chiều trong Python được biểu diễn bằng kiểu dữ liệu nào?",
+      "options": ["A. Tuple.", "B. Set.", "C. List.", "D. Dictionary."],
+      "answer": "C"
+    },
+    {
+      "number": 82,
+      "question": "Bài 17. Câu 2. Lệnh nào sau đây kiểm tra xem giá trị 7 có tồn tại trong mảng A = [1, 3, 5, 7, 9]?",
+      "options": ["A. 7 in A.", "B. A.has(7).", "C. A.contains(7).", "D. A.search(7)."],
+      "answer": "A"
+    },
+    {
+      "number": 83,
+      "question": "Bài 17. Câu 3. Để thêm một phần tử vào cuối danh sách trong Python, ta dùng lệnh nào?",
+      "options": ["A. append().", "B. insert().", "C. extend().", "D. pop()."],
+      "answer": "A"
+    },
+    {
+      "number": 84,
+      "question": "Bài 17. Câu 4. Mảng hai chiều là gì?",
+      "options": ["A. Một chuỗi các phần tử cùng kiểu dữ liệu.", "B. Một danh sách chứa các danh sách con.", "C. Một bảng với dữ liệu không có cấu trúc.", "D. Một danh sách các giá trị ngẫu nhiên."],
+      "answer": "B"
+    },
+    {
+      "number": 85,
+      "question": "Bài 17. Câu 5. Lệnh nào sau đây được dùng để truy cập phần tử tại hàng 2 cột 3 của ma trận A sau?",
+      "code": "A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
+      "options": ["A. A[1][2].", "B. A[2][3].", "C. A[3][2].", "D. A[0][1]."],
+      "answer": "A"
+    },
+    {
+      "number": 86,
+      "question": "Bài 17. Câu 6. Trong Python, ta có thể duyệt qua từng phần tử của mảng hai chiều bằng lệnh nào sau đây?",
+      "options": ["A. Một lệnh for đơn.", "B. Hai lệnh for lồng nhau.", "C. Hàm map().", "D. Lệnh while."],
+      "answer": "B"
+    },
+    {
+      "number": 87,
+      "question": "Bài 17. Câu 7. Để tính tổng các phần tử của một danh sách trong Python, ta sử dụng hàm nào?",
+      "options": ["A. sum().", "B. max().", "C. min().", "D. avg()."],
+      "answer": "A"
+    },
+    {
+      "number": 88,
+      "question": "Bài 17. Câu 8. Cho danh sách A sau. Kết quả của lệnh print(A[-1]) là gì?",
+      "code": "A = [1, 2, 3, 4, 5]\nprint(A[-1])",
+      "options": ["A. 1.", "B. 3.", "C. 5.", "D. Lỗi."],
+      "answer": "C"
+    },
+    {
+      "number": 89,
+      "question": "Bài 17. Câu 9. Mảng hai chiều trong Python có thể được biểu diễn bằng cách nào?",
+      "options": ["A. Dictionary chứa danh sách.", "B. List chứa list.", "C. Tuple chứa set.", "D. Set chứa tuple."],
+      "answer": "B"
+    },
+    {
+      "number": 90,
+      "question": "Bài 17. Câu 10. Lệnh nào sau đây dùng để xóa một phần tử trong danh sách tại vị trí cụ thể?",
+      "options": ["A. list.remove(index).", "B. list.delete(index).", "C. list.clear(index).", "D. list.pop(index)."],
+      "answer": "D"
+    },
+    {
+      "number": 91,
+      "question": "Bài 19. Câu 1. Trong tìm kiếm tuần tự, khi nào ta có thể tìm thấy kết quả ngay với ít bước nhất?",
+      "options": ["A. Khi phần tử cần tìm ở giữa danh sách.", "B. Khi phần tử cần tìm ở cuối danh sách.", "C. Khi phần tử cần tìm không có trong danh sách.", "D. Khi phần tử cần tìm là phần tử đầu tiên."],
+      "answer": "D"
+    },
+    {
+      "number": 92,
+      "question": "Bài 19. Câu 2. Trong tìm kiếm tuần tự, khi nào cần nhiều bước nhất để tìm ra kết quả?",
+      "options": ["A. Khi phần tử cần tìm ở giữa danh sách.", "B. Khi phần tử cần tìm là phần tử cuối cùng.", "C. Khi phần tử cần tìm không có trong danh sách.", "D. Khi phần tử cần tìm là phần tử đầu tiên."],
+      "answer": "B"
+    },
+    {
+      "number": 93,
+      "question": "Bài 19. Câu 3. Với thuật toán tìm kiếm tuần tự, cần duyệt bao nhiêu phần tử để tìm ra phần tử có giá trị bằng 34 trong dãy A sau?",
+      "code": "A = [0, 4, 9, 10, 12, 14, 17, 18, 20, 31, 34, 67]",
+      "options": ["A. 6.", "B. 10.", "C. 12.", "D. 11."],
+      "answer": "D"
+    },
+    {
+      "number": 94,
+      "question": "Bài 19. Câu 4. Thuật toán tìm kiếm nhị phân có ưu điểm gì so với tìm kiếm tuần tự?",
+      "options": ["A. Đơn giản hơn trong lập trình.", "B. Có thể áp dụng cho mọi danh sách.", "C. Tốc độ nhanh hơn khi danh sách đã sắp xếp.", "D. Không cần phải sắp xếp danh sách trước khi tìm."],
+      "answer": "C"
+    },
+    {
+      "number": 95,
+      "question": "Bài 19. Câu 5. Cho dãy A sau. Cần tìm giá trị K = 9 bằng thuật toán tìm kiếm nhị phân, chỉ số nào sẽ được trả về?",
+      "code": "A = [1, 3, 4, 7, 8, 9, 10]\nK = 9",
+      "options": ["A. 3.", "B. 4.", "C. 5.", "D. 6."],
+      "answer": "C"
+    },
+    {
+      "number": 96,
+      "question": "Bài 19. Câu 6. Thuật toán tìm kiếm tuần tự có thể áp dụng trong trường hợp nào?",
+      "options": ["A. Dữ liệu đã được sắp xếp.", "B. Dữ liệu chưa được sắp xếp.", "C. Chỉ cho các dãy số.", "D. Chỉ cho các dãy chữ cái."],
+      "answer": "B"
+    },
+    {
+      "number": 97,
+      "question": "Bài 19. Câu 7. Nếu dãy số đã được sắp xếp giảm dần, thuật toán tìm kiếm nhị phân sẽ hoạt động như thế nào?",
+      "options": ["A. Thuật toán vẫn hoạt động bình thường.", "B. Phải thay đổi thuật toán để so sánh ngược lại.", "C. Không thể áp dụng tìm kiếm nhị phân.", "D. Chỉ áp dụng cho dãy số ngắn."],
+      "answer": "B"
+    },
+    {
+      "number": 98,
+      "question": "Bài 21. Câu 1. Ý tưởng chính của thuật toán sắp xếp chèn là gì?",
+      "options": ["A. Tìm phần tử nhỏ nhất và chuyển nó vào vị trí đầu tiên.", "B. So sánh từng cặp phần tử liền kề và hoán đổi nếu chúng không đúng thứ tự.", "C. Chèn từng phần tử vào đúng vị trí trong một mảng con đã sắp xếp.", "D. Chia mảng thành hai phần và sắp xếp từng phần đệ quy."],
+      "answer": "C"
+    },
+    {
+      "number": 99,
+      "question": "Bài 21. Câu 2. Trong thuật toán sắp xếp chọn, điều gì xảy ra trong mỗi lần lặp?",
+      "options": ["A. Phần tử lớn nhất được chuyển về cuối mảng.", "B. Phần tử nhỏ nhất được đưa vào đúng vị trí.", "C. Mỗi phần tử được chèn vào đúng vị trí của nó.", "D. Các phần tử liền kề được hoán đổi để sắp xếp."],
+      "answer": "B"
+    },
+    {
+      "number": 100,
+      "question": "Bài 21. Câu 3. Thuật toán nào sau đây không sử dụng so sánh giữa các phần tử?",
+      "options": ["A. Sắp xếp chèn.", "B. Sắp xếp chọn.", "C. Sắp xếp đếm.", "D. Sắp xếp nổi bọt."],
+      "answer": "C"
+    },
+    {
+      "number": 101,
+      "question": "Bài 21. Câu 4. Mục đích của vòng lặp bên trong trong thuật toán sắp xếp nổi bọt là gì?",
+      "options": ["A. Tìm phần tử lớn nhất và đưa nó về đúng vị trí.", "B. Tìm phần tử nhỏ nhất và đưa nó về đúng vị trí.", "C. So sánh và hoán đổi các phần tử liền kề nếu chúng không đúng thứ tự.", "D. Chia mảng thành các phần nhỏ hơn để sắp xếp."],
+      "answer": "C"
+    },
+    {
+      "number": 102,
+      "question": "Bài 21. Câu 5. Trường hợp tốt nhất của thuật toán sắp xếp nổi bọt là gì?",
+      "options": ["A. Mảng được sắp xếp ngược lại.", "B. Mảng đã được sắp xếp.", "C. Mảng chứa tất cả các phần tử giống nhau.", "D. Mảng chỉ có hai phần tử."],
+      "answer": "B"
+    },
+    {
+      "number": 103,
+      "question": "Bài 21. Câu 6. Phát biểu nào sai về thuật toán sắp xếp nổi bọt?",
+      "options": ["A. Nó là thuật toán ổn định, có nghĩa là nó giữ nguyên thứ tự của các phần tử bằng nhau.", "B. Nó là thuật toán tại chỗ, tức là nó sử dụng bộ nhớ phụ không đáng kể.", "C. Nó luôn thực hiện số lượng so sánh giống nhau, bất kể thứ tự của đầu vào.", "D. Độ phức tạp thời gian xấu nhất của nó là O(n^2)."],
+      "answer": "C"
+    },
+    {
+      "number": 104,
+      "question": "Bài 21. Câu 7. Trong thuật toán sắp xếp chèn, thuật toán xác định vị trí để chèn phần tử như thế nào trong mỗi lần lặp?",
+      "options": ["A. Bằng cách tìm phần tử ở giữa và chèn vào đó.", "B. Bằng cách dịch chuyển các phần tử lớn hơn phần tử hiện tại sang bên phải.", "C. Bằng cách hoán đổi các phần tử liền kề cho đến khi phần tử hiện tại ở đúng vị trí.", "D. Bằng cách chia mảng ra đệ quy."],
+      "answer": "B"
+    },
+    {
+      "number": 105,
+      "question": "Bài 23. Câu 1. Phương pháp kiểm thử nào dưới đây có thể giúp tăng độ tin cậy của chương trình nhưng không chứng minh được tính đúng của thuật toán?",
+      "options": ["A. Kiểm thử bằng chứng minh lôgic toán học.", "B. Sử dụng các bộ dữ liệu kiểm thử.", "C. Sử dụng phương pháp quy nạp toán học.", "D. Xem xét thời gian chạy của chương trình."],
+      "answer": "B"
+    },
+    {
+      "number": 106,
+      "question": "Bài 23. Câu 2. Phương pháp nào sau đây thường được sử dụng để chứng minh tính đúng của thuật toán một cách chắc chắn?",
+      "options": ["A. Kiểm thử bằng cách chạy nhiều lần.", "B. Dùng dữ liệu kiểm thử ngẫu nhiên.", "C. Chứng minh bằng lôgic toán học.", "D. Kiểm tra độ phức tạp tính toán."],
+      "answer": "C"
+    },
+    {
+      "number": 107,
+      "question": "Bài 23. Câu 3. Mục đích chính của việc kiểm thử chương trình là gì?",
+      "options": ["A. Đảm bảo chương trình chạy nhanh nhất có thể.", "B. Phát hiện lỗi và sửa lỗi để tăng độ tin cậy của chương trình.", "C. Chứng minh chương trình không bao giờ sai.", "D. Đánh giá khả năng tối ưu của thuật toán."],
+      "answer": "B"
+    },
+    {
+      "number": 108,
+      "question": "Bài 23. Câu 4. Trong kiểm thử chương trình, tại sao không thể chỉ dựa vào các bộ dữ liệu kiểm thử để chứng minh tính đúng của thuật toán?",
+      "options": ["A. Vì các bộ dữ liệu kiểm thử thường có sai sót.", "B. Vì kiểm thử không kiểm tra được tất cả các tình huống có thể xảy ra.", "C. Vì thuật toán luôn có khả năng chạy sai.", "D. Vì kiểm thử chỉ làm tăng thời gian chạy của chương trình."],
+      "answer": "B"
+    },
+    {
+      "number": 109,
+      "question": "Bài 23. Câu 5. Tiêu chí nào dưới đây thường được xem xét khi đánh giá hiệu quả của một thuật toán?",
+      "options": ["A. Tính đơn giản và dễ hiểu.", "B. Thời gian và không gian bộ nhớ sử dụng.", "C. Khả năng phát hiện lỗi tự động.", "D. Độ dài của mã lệnh."],
+      "answer": "B"
+    },
+    {
+      "number": 110,
+      "question": "Bài 23. Câu 6. Một chương trình có thể tối ưu về mặt thời gian nhưng không tối ưu về mặt nào dưới đây?",
+      "options": ["A. Tính đúng của thuật toán.", "B. Dung lượng bộ nhớ sử dụng.", "C. Khả năng kiểm thử.", "D. Độ phức tạp logic."],
+      "answer": "B"
+    },
+    {
+      "number": 111,
+      "question": "Bài 23. Câu 7. Trong kiểm thử chương trình, tại sao nên sử dụng các bộ dữ liệu có tính đa dạng cao?",
+      "options": ["A. Để kiểm tra độ nhanh chậm của thuật toán.", "B. Để tăng khả năng phát hiện lỗi trong các trường hợp khác nhau.", "C. Để giúp chương trình dễ hiểu hơn.", "D. Để giảm thời gian chạy chương trình."],
+      "answer": "B"
+    },
+    {
+      "number": 112,
+      "question": "Bài 23. Câu 8. Độ phức tạp tính toán của một thuật toán chủ yếu đánh giá điều gì?",
+      "options": ["A. Tính đơn giản của thuật toán.", "B. Tài nguyên phần cứng cần thiết để chạy chương trình.", "C. Tốc độ thực thi và bộ nhớ cần thiết cho chương trình.", "D. Khả năng kiểm tra lỗi của chương trình."],
+      "answer": "C"
+    },
+    {
+      "number": 113,
+      "question": "Bài 23. Câu 9. Trong các lựa chọn sau, đâu là lợi ích của việc sử dụng các bộ dữ liệu kiểm thử?",
+      "options": ["A. Chứng minh thuật toán chạy đúng cho mọi trường hợp.", "B. Tăng độ tin cậy của chương trình.", "C. Giảm thời gian cần để viết mã.", "D. Đảm bảo bộ nhớ sử dụng tối thiểu."],
+      "answer": "B"
+    },
+    {
+      "number": 114,
+      "question": "Bài 23. Câu 10. Phương pháp quy nạp toán học thường được sử dụng để làm gì trong kiểm thử chương trình?",
+      "options": ["A. Để tìm và sửa lỗi trong mã lệnh.", "B. Để chứng minh tính đúng của thuật toán.", "C. Để đo độ phức tạp của chương trình.", "D. Để đánh giá dung lượng bộ nhớ sử dụng."],
+      "answer": "B"
     }
   ]
 }

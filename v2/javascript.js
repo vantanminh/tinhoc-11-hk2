@@ -524,6 +524,8 @@ function renderHeader() {
   const total = sourceQuestions.length;
   const showScore = state.revealMode === "instant" || state.submitted;
 
+  els.openPaletteBtn.textContent = total > 0 ? `1–${total}` : "0";
+
   els.summary.textContent = showScore
     ? `${answered}/${total} · ${correct} đúng`
     : `${answered}/${total}`;
