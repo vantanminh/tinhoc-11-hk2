@@ -120,6 +120,13 @@ button {
   transition: 0.15s ease;
 }
 
+.tool-btn,
+.tool-field,
+.toggle-chip,
+.summary {
+  min-width: 0;
+}
+
 .tool-btn:hover,
 .nav-btn:hover {
   border-color: #94a3b8;
@@ -199,6 +206,13 @@ button {
   font-weight: 700;
   cursor: pointer;
   user-select: none;
+}
+
+.toggle-chip span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .toggle-chip input {
@@ -535,16 +549,94 @@ button {
   }
 
   .topbar {
+    gap: 8px;
     padding: 10px 12px;
   }
 
   .tools {
     width: 100%;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) auto;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 6px;
   }
 
   .title {
     font-size: 14px;
+    -webkit-line-clamp: 1;
+  }
+
+  .tool-btn,
+  .tool-field,
+  .toggle-chip,
+  .summary {
+    min-height: 34px;
+  }
+
+  .tool-btn,
+  .summary {
+    padding: 0 10px;
+    font-size: 12.5px;
+    border-radius: 11px;
+  }
+
+  .tool-field {
+    padding: 0 8px;
+    gap: 6px;
+  }
+
+  .tool-label {
+    font-size: 11px;
+  }
+
+  .tool-select {
+    min-width: 0;
+    width: 100%;
+    font-size: 12.5px;
+  }
+
+  .toggle-chip {
+    padding: 0 10px;
+    gap: 6px;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  #openPaletteBtn {
+    grid-column: 1;
+    grid-row: 1;
+    justify-content: center;
+  }
+
+  .mode-field {
+    grid-column: 2 / 4;
+    grid-row: 1;
+  }
+
+  #submitBtn {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  #summary {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #shuffleQuestionsToggle {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #shuffleOptionsToggle {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  #resetBtn {
+    grid-column: 4;
+    grid-row: 2;
   }
 
   .viewer-head {
@@ -579,6 +671,16 @@ button {
 
   .palette {
     grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .tool-label {
+    display: none;
+  }
+
+  .mode-field {
+    padding-inline: 10px;
   }
 }
 
