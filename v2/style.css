@@ -322,6 +322,60 @@ button {
   border-bottom: 1px solid var(--line);
 }
 
+.viewer-head-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.bulb-btn {
+  min-height: 36px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.bulb-btn:hover {
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+
+.bulb-btn.active {
+  border-color: #fbbf24;
+  background: #fef9c3;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+}
+
+.explain-box {
+  flex: 0 0 auto;
+  max-height: 140px;
+  overflow: auto;
+  padding: 10px 14px;
+  border: 1px solid #fde68a;
+  border-radius: 14px;
+  background: #fffbeb;
+  color: #78350f;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.explain-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #b45309;
+  margin-bottom: 5px;
+}
+
 .q-position {
   font-size: 13px;
   color: var(--muted);

@@ -78,13 +78,17 @@ const els = {
   options: document.getElementById("options"),
   prevBtn: document.getElementById("prevBtn"),
   clearBtn: document.getElementById("clearBtn"),
-  nextBtn: document.getElementById("nextBtn")
+  nextBtn: document.getElementById("nextBtn"),
+  explainBtn: document.getElementById("explainBtn"),
+  explainBox: document.getElementById("explainBox")
 };
 
 let data = null;
+let explainData = {};
 let sourceQuestions = [];
 let questions = [];
 let questionIndexByNumber = new Map();
+let showExplain = false;
 
 const state = {
   current: 0,
@@ -659,10 +663,36 @@ function renderQuestion() {
   els.clearBtn.disabled = !selected;
 }
 
+function renderExplainBox() {
+  const question = questions[state.current];
+  els.explainBtn.classList.toggle("active", showExplain);
+
+  if (!showExplain || !question) {
+    els.explainBox.hidden = true;
+    return;
+  }
+
+  const text = explainData[String(question.number)];
+  if (!text) {
+    els.explainBox.hidden = true;
+    return;
+  }
+
+  els.explainBox.hidden = false;
+  els.explainBox.innerHTML =
+    `<div class="explain-label">Giải thích</div><div>${escapeHtml(text)}</div>`;
+}
+
+function toggleExplain() {
+  showExplain = !showExplain;
+  renderExplainBox();
+}
+
 function render() {
   renderHeader();
   renderPalette();
   renderQuestion();
+  renderExplainBox();
 }
 
 function goTo(index) {
@@ -774,6 +804,7 @@ function bindEvents() {
 
   els.openPaletteBtn.addEventListener("click", openOverlay);
   els.closePaletteBtn.addEventListener("click", closeOverlay);
+  els.explainBtn.addEventListener("click", toggleExplain);
 
   [els.paletteDesktop, els.paletteMobile].forEach((container) => {
     container.addEventListener("click", (event) => {
@@ -852,13 +883,22 @@ function resetAll() {
 
 async function init() {
   try {
-    const response = await fetch("question.json", { cache: "no-store" });
-    if (!response.ok) throw new Error("Không tải được question.json");
+    const [questionRes, explainRes] = await Promise.all([
+      fetch("question.json", { cache: "no-store" }),
+      fetch("explain.json", { cache: "no-store" }).catch(() => null)
+    ]);
 
-    data = await response.json();
+    if (!questionRes.ok) throw new Error("Không tải được question.json");
+
+    data = await questionRes.json();
     sourceQuestions = Array.isArray(data.questions)
       ? data.questions.map(parseQuestion)
       : [];
+
+    if (explainRes && explainRes.ok) {
+      const explainJson = await explainRes.json();
+      explainData = explainJson.explanations || {};
+    }
 
     loadState();
     normalizeState();
