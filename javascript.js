@@ -18,402 +18,13 @@ const statusLabels = {
   mastered: "Đã chắc",
 };
 
-const sectionConfig = [
-  { id: "all", title: "Tất cả", subtitle: "80 câu" },
-  { id: "sec1", title: "Phần 1", subtitle: "1-15 • Danh sách cơ bản" },
-  { id: "sec2", title: "Phần 2", subtitle: "16-30 • Danh sách & mảng 2D" },
-  { id: "sec3", title: "Phần 3", subtitle: "31-50 • Thuật toán tìm kiếm" },
-  { id: "sec4", title: "Phần 4", subtitle: "51-66 • Tệp & sắp xếp" },
-  { id: "sec5", title: "Phần 5", subtitle: "67-80 • Kiểm thử & độ phức tạp" },
-];
+const QUESTIONS_DATA_URL = "questions.json";
+const QUESTIONS_CACHE_KEY = `tin11_hk2_questions_cache_v${APP_VERSION}`;
 
-const assetNotes = [
-  {
-    id: 55,
-    required: true,
-    text: "Thiếu đoạn mã chương trình ghi dữ liệu ra tệp output.txt trong bản OCR.",
-  },
-  {
-    id: 77,
-    required: true,
-    text: "Thiếu đoạn chương trình và dữ liệu dayso trong bản OCR.",
-  },
-  {
-    id: 79,
-    required: true,
-    text: "Thiếu chương trình đếm số ước số thực sự trong bản OCR.",
-  },
-  {
-    id: 80,
-    required: false,
-    text: "Có thể thêm ảnh/đoạn mã gốc nếu muốn hiển thị sát đề hơn.",
-  },
-];
-
-const q = (id, stem, options, answer, extra = {}) => ({
-  id,
-  stem,
-  options,
-  answer,
-  ...extra,
-});
-
-function getSectionInfo(id) {
-  if (id <= 15) {
-    return {
-      sectionId: "sec1",
-      sectionTitle: "Phần 1 • Danh sách Python cơ bản",
-    };
-  }
-  if (id <= 30) {
-    return {
-      sectionId: "sec2",
-      sectionTitle: "Phần 2 • Danh sách nâng cao & mảng 2 chiều",
-    };
-  }
-  if (id <= 50) {
-    return {
-      sectionId: "sec3",
-      sectionTitle: "Phần 3 • Thuật toán tìm kiếm",
-    };
-  }
-  if (id <= 66) {
-    return {
-      sectionId: "sec4",
-      sectionTitle: "Phần 4 • Tệp & sắp xếp",
-    };
-  }
-  return {
-    sectionId: "sec5",
-    sectionTitle: "Phần 5 • Kiểm thử, độ phức tạp, tính đúng",
-  };
-}
-
-/*
-  Nếu muốn thêm ảnh sau này, bạn chỉ cần thêm thuộc tính:
-  image: "images/q55.png"
-  vào object câu hỏi tương ứng.
-*/
-
-const questions = [
-  // ===== Phần 1 =====
-  q(1, `Trong Python, các phần tử của mảng cách nhau bởi dấu nào?`, { A: `dấu chấm (.)`, B: `dấu phẩy (,)`, C: `dấu cách ( )`, D: `dấu trừ (-)` }, `B`),
-  q(2, `Trong Python, chỉ số của mảng bắt đầu từ số nào?`, { A: `0`, B: `1`, C: `2`, D: `3` }, `A`),
-  q(3, `Trong Python, để kiểm tra một đối tượng có nằm trong mảng hay không ta dùng toán tử nào?`, { A: `not`, B: `or`, C: `in`, D: `and` }, `C`),
-  q(4, `Trong Python, kiểu mảng là gì?`, { A: `array`, B: `float`, C: `str`, D: `list` }, `D`),
-  q(5, `Trong Python, để bổ sung phần tử có giá trị m vào cuối mảng A, ta dùng lệnh nào?`, { A: `A.insert(m)`, B: `m.insert(A)`, C: `A.append(m)`, D: `m.append(A)` }, `C`),
-  q(6, `Trong Python, để xóa toàn bộ các phần tử của mảng B, ta dùng lệnh nào?`, { A: `B.append()`, B: `B.remove()`, C: `B.insert()`, D: `B.clear()` }, `D`),
-  q(7, `Trong Python, để biết số phần tử của mảng A dùng lệnh nào?`, { A: `append(A)`, B: `len(A)`, C: `str(A)`, D: `del(A)` }, `B`),
-  q(8, `Trong Python, để bổ sung phần tử vào vị trí bất kì của mảng arr ta dùng lệnh nào?`, { A: `arr.append()`, B: `arr.remove()`, C: `arr.insert()`, D: `arr.clear()` }, `C`),
-  q(9, `Trong Python, chọn lệnh khởi tạo mảng A gồm 3 phần tử có giá trị 1, 3 và 5?`, { A: `A = (1, 3, 5)`, B: `A = {1, 3, 5}`, C: `A = [1, 3, 5]`, D: `A = [1; 3; 5]` }, `C`),
-  q(10, `Trong Python, để tham chiếu đến phần tử thứ ba của mảng arr ta dùng lệnh nào?`, { A: `arr[2]`, B: `arr[1]`, C: `arr[0]`, D: `arr[-1]` }, `A`),
-  q(11, `Trong Python, để truy cập phần tử cuối cùng của một mảng, bạn sử dụng chỉ số nào?`, { A: `-1`, B: `0`, C: `1`, D: `không xác định` }, `A`),
-  q(12, `Trong Python, lệnh nào sau đây dùng để lấy ra phần tử cuối cùng trong danh sách A?`, { A: `pop(A)`, B: `A.pop()`, C: `pop(len(A))`, D: `pop()` }, `B`),
-  q(13, `Trong Python, để xuất phần tử kế phần tử cuối cùng trong danh sách A, phương án nào đúng?`, { A: `print(len(A) - 2)`, B: `print(A[len(A) - 2])`, C: `print(A[len(A) - 1])`, D: `print(A[len(A)])` }, `B`),
-  q(14, `Trong Python, cho mảng numbers = [3, 7, 9, 2, 5], giá trị của numbers[2] là gì?`, { A: `3`, B: `7`, C: `9`, D: `2` }, `C`),
-  q(15, `Trong Python, cho mảng colors = ['red', 'blue', 'green', 'yellow'], cách để truy cập phần tử 'green' là?`, { A: `colors[0]`, B: `colors[1]`, C: `colors[2]`, D: `colors[3]` }, `C`),
-
-  // ===== Phần 2 =====
-  q(16, `Trong Python, cho mảng numbers = [1, 2, 3, 4, 5], cách để thêm phần tử 6 vào cuối mảng là gì?`, { A: `numbers.add(6)`, B: `numbers.insert(6)`, C: `numbers.push(6)`, D: `numbers.append(6)` }, `D`),
-  q(17, `Cho mảng numbers = [2, 4, 6, 8, 10], giá trị phần tử numbers[2] là gì?`, { A: `4`, B: `2`, C: `3`, D: `6` }, `D`),
-  q(18, `Cho mảng numbers = [2, 4, 6, 8, 10], cách để tính tổng các phần tử trong mảng là?`, { A: `total(numbers)`, B: `add(numbers)`, C: `sum(numbers)`, D: `calculate(numbers)` }, `C`),
-  q(19, `Cho mảng numbers = [5, 2, 8, 3, 9], cách để tìm giá trị lớn nhất trong mảng là?`, { A: `largest(numbers)`, B: `max(numbers)`, C: `maximum(numbers)`, D: `find_max(numbers)` }, `B`),
-  q(
-    20,
-    `Trong Python, cho đoạn lệnh sau. Sau khi thực hiện thì được dãy số A nào?`,
-    {
-      A: `[7, 26, 48, 9, 35, 46, 5, 9, 83]`,
-      B: `[7, 26, 48, 9, 22, 35, 5, 9, 82]`,
-      C: `[7, 3, 26, 48, 9, 22, 46, 5, 9, 83]`,
-      D: `[7, 26, 48, 9, 22, 35, 46, 9, 83]`,
-    },
-    `A`,
-    {
-      code: `A = [7, 3, 26, 48, 9, 22, 35, 46]
-A.remove(3)
-A.append(5)
-A.append(9)
-A.append(83)
-A.remove(22)`,
-    }
-  ),
-  q(21, `Để xuất phần tử cuối cùng trong danh sách A, phương án nào sau đây đúng?`, { A: `print(A[len(A) - 1])`, B: `print(A[len(A)])`, C: `print(A[len(A) - 2])`, D: `print(len(A) - 1)` }, `A`),
-  q(
-    22,
-    `Cho đoạn lệnh sau, dãy số Arr thu được là dãy số nào?`,
-    {
-      A: `[5, 9, 7, 3, 4, 1]`,
-      B: `[5, 7, 9, 3, 4, 1]`,
-      C: `[5, 7, 3, 4, 1, 2, 9]`,
-      D: `[5, 7, 3, 4, 1, 2]`,
-    },
-    `B`,
-    {
-      code: `Arr = [5, 7, 3, 4, 1]
-Arr.insert(2, 9)`,
-    }
-  ),
-  q(
-    23,
-    `Cho mảng 2 chiều A dưới đây. Giá trị của phần tử tại hàng 3, cột 1 là bao nhiêu?`,
-    { A: `11`, B: `96`, C: `92`, D: `65` },
-    `D`,
-    {
-      code: `A = [[42, 76, 92],
-     [11, 45, 20],
-     [65, 38, 57],
-     [19, 96, 45],
-     [92, 88, 191]]`,
-      note: `Lưu ý: trong câu này đề đang đếm hàng/cột theo thứ tự 1, 2, 3...`,
-    }
-  ),
-  q(
-    24,
-    `Cho mảng 2 chiều arr dưới đây. Để in ra hàng thứ 2 của mảng trên, bạn sử dụng câu lệnh nào?`,
-    { A: `print(arr[:,-1])`, B: `print(arr[2])`, C: `print(arr[2, :])`, D: `print(arr[1])` },
-    `D`,
-    {
-      code: `arr = [[10, 20, 30], [40, 50, 60], [70, 80, 90]]`,
-    }
-  ),
-  q(25, `Tạo trực tiếp mảng hai chiều, câu nào dưới đây đúng?`, { A: `A = [1, 2, 3, 4]`, B: `B = ["Hà"; "Quang"; "Lan"]`, C: `D = [[1, 3, 5], [2, 5, 9], [5, 9, 20]]`, D: `C = [1, 3, 5], [2, 5, 9], [5, 9, 20]` }, `C`),
-  q(26, `Cho các câu sau thao tác với mảng một chiều A, chọn câu sai?`, { A: `A.append(): bổ sung phần tử vào cuối A`, B: `A.remove(): xóa một phần tử trong A`, C: `A.remove(): xóa toàn bộ phần tử trong A`, D: `A.clear(): xóa toàn bộ phần tử trong A` }, `C`),
-  q(27, `Để xóa 3 phần tử đầu tiên trong danh sách a, phương án nào đúng?`, { A: `del(a[3])`, B: `del(a[0:3])`, C: `del(a[0:2])`, D: `del(a[1:3])` }, `B`),
-  q(
-    28,
-    `Cho đoạn lệnh sau, danh sách A thu được sau khi chạy đoạn lệnh là gì?`,
-    { A: `[7, 3, 1, 9]`, B: `[7, 3, 8, 9]`, C: `[7, 8, 1, 9]`, D: `[7, 3, 8, 1]` },
-    `B`,
-    {
-      code: `A = [7, 3, 8, 1, 9]
-del(A[3])`,
-    }
-  ),
-  q(29, `Cho các câu sau, chọn câu đúng?`, { A: `Xuất mảng theo hàng ngang, mỗi số cách nhau dấu cách: for m in B: print(m, end=" ")`, B: `Xuất mảng theo hàng dọc: for m in B: print(m, end=" ")`, C: `C = [1, 3, 5], [2, 5, 9], [5, 9, 20] là mảng hai chiều`, D: `Xuất mảng B theo chiều ngược lại: for m in B[::1]: print(m, end=" ")` }, `A`),
-  q(30, `Dùng lệnh nào sau đây để xóa phần tử cuối cùng trong danh sách A?`, { A: `pop(A)`, B: `A.remove(A[-1])`, C: `A.pop(A[len(A)])`, D: `pop(len(A))` }, `B`),
-
-  // ===== Phần 3 =====
-  q(31, `Thuật toán tìm kiếm nào dưới đây yêu cầu mảng đã được sắp xếp trước khi thực hiện?`, { A: `Tìm kiếm tuần tự`, B: `Tìm kiếm nội suy`, C: `Tìm kiếm nhị phân`, D: `Tìm kiếm trong cây` }, `C`),
-  q(32, `Trong thuật toán tìm kiếm nhị phân, mảng được chia nhỏ mỗi lần tìm kiếm dựa trên điều gì?`, { A: `Giá trị của phần tử đầu tiên`, B: `Giá trị trung bình của mảng`, C: `Giá trị nhỏ nhất của mảng`, D: `Giá trị tại chỉ số trung tâm của mảng` }, `D`),
-  q(33, `Chọn câu diễn đạt đúng hoạt động của thuật toán tìm kiếm tuần tự?`, { A: `Tìm trên danh sách đã sắp xếp, bắt đầu từ đầu danh sách, chừng nào chưa tìm thấy hoặc chưa tìm hết thì còn tìm tiếp`, B: `Tìm trên danh sách đã sắp xếp, bắt đầu từ giữa danh sách, chừng nào chưa tìm thấy hoặc chưa tìm hết thì còn tìm tiếp`, C: `Tìm trên danh sách bất kì, bắt đầu từ giữa danh sách, chừng nào chưa tìm thấy hoặc chưa tìm hết thì còn tìm tiếp`, D: `Tìm trên danh sách bất kì, bắt đầu từ đầu danh sách, chừng nào chưa tìm thấy hoặc chưa tìm hết thì còn tìm tiếp` }, `D`),
-  q(34, `Trong tìm kiếm tuần tự thì điều kiện cần kiểm tra để dừng vòng lặp là gì?`, { A: `Tìm thấy vị trí i của phần tử K`, B: `Đã duyệt hết các phần tử khi tìm thấy vị trí của K`, C: `Tìm thấy vị trí i của phần tử K hoặc duyệt đến phần tử cuối cùng mà vẫn chưa thấy giá trị bằng K`, D: `Duyệt lần lượt các phần tử từ đầu đến cuối dãy` }, `C`),
-  q(35, `Trong tìm kiếm tuần tự thì có mấy điều kiện cần kiểm tra để dừng vòng lặp?`, { A: `1`, B: `2`, C: `3`, D: `4` }, `B`),
-  q(36, `Trong thuật toán tìm kiếm nhị phân, chỉ số mid được tính theo công thức nào?`, { A: `mid = (left + right) // 2`, B: `mid = (left + right) % 2`, C: `mid = (left + right) / 2`, D: `mid = (left + right // 3)` }, `A`),
-  q(37, `Thuật toán tìm kiếm tuần tự cần bao nhiêu bước để tìm thấy số 7 trong danh sách A = [1, 4, 8, 7, 10, 28]?`, { A: `2`, B: `3`, C: `4`, D: `5` }, `C`),
-  q(38, `Thuật toán tìm kiếm tuần tự cần bao nhiêu bước để tìm thấy số 25 trong danh sách B = [3, 5, 41, 7, 11, 46, 58, 79, 93, 25]?`, { A: `9`, B: `10`, C: `11`, D: `8` }, `B`),
-  q(
-    39,
-    `Cho các câu sau, chọn câu sai?`,
-    {
-      A: `Với K = 11, thuật toán tìm kiếm tuần tự sẽ thực hiện 5 bước chạy`,
-      B: `Với K = 8, thuật toán tìm kiếm tuần tự thì chỉ số của K trong mảng A là 3`,
-      C: `Với K = 12, thuật toán tìm kiếm nhị phân sẽ thực hiện 4 bước chạy`,
-      D: `Với K = 11, thuật toán tìm kiếm nhị phân sau khi chạy xong bước 1 thì phạm vi tìm kiếm được giới hạn thành [11, 12, 18, 21]`,
-    },
-    `C`,
-    {
-      code: `A = [1, 4, 5, 8, 11, 12, 18, 21]
-K = int(input("Moi nhap K:"))`,
-    }
-  ),
-  q(
-    40,
-    `Thuật toán tìm kiếm nhị phân cần bao nhiêu bước để tìm thấy số 34 trong dãy A dưới đây?`,
-    { A: `3`, B: `4`, C: `5`, D: `6` },
-    `A`,
-    {
-      code: `A = [0, 4, 9, 10, 12, 14, 17, 18, 20, 31, 34, 67]`,
-    }
-  ),
-  q(
-    41,
-    `Cho dãy số A dưới đây. Với thuật toán tìm kiếm nhị phân thì tại bước số 3, giá trị của giới hạn bên trái, bên phải và giá trị giữa khi tìm kiếm 755 là bao nhiêu?`,
-    { A: `9, 16, 12`, B: `13, 16, 14`, C: `15, 16, 15`, D: `16, 16, 16` },
-    `B`,
-    {
-      code: `A = [1, 5, 8, 11, 16, 22, 34, 46, 57, 61, 83, 94, 102, 305, 457, 633, 755]`,
-    }
-  ),
-  q(
-    42,
-    `Cho dãy số A dưới đây. Với thuật toán tìm kiếm nhị phân thì tại bước số 2, giá trị của giới hạn bên trái, bên phải và giá trị giữa khi tìm kiếm 755 là bao nhiêu?`,
-    { A: `9, 16, 12`, B: `13, 16, 14`, C: `15, 16, 15`, D: `0, 8, 16` },
-    `A`,
-    {
-      code: `A = [1, 5, 8, 11, 16, 22, 34, 46, 57, 61, 83, 94, 102, 305, 457, 633, 755]`,
-    }
-  ),
-  q(43, `Trong thuật toán tìm kiếm nhị phân với dãy số A tăng dần thì khi A[mid] < K ở bước 1, ta có`, { A: `Left = 0, Right = mid - 1`, B: `Left = mid + 1, Right = len(A)`, C: `Left = mid + 1, Right = len(A) - 1`, D: `Left = mid + 1, Right = mid - 1` }, `C`),
-  q(44, `Trong thuật toán tìm kiếm nhị phân với dãy số A tăng dần thì khi A[mid] > K ở bước 1, ta có`, { A: `Left = 0, Right = mid - 1`, B: `Left = mid + 1, Right = mid - 1`, C: `Left = mid + 1, Right = len(A) - 1`, D: `Left = 0, Right = mid + 1` }, `A`),
-  q(45, `Trong thuật toán tìm kiếm nhị phân với dãy số A giảm dần thì khi A[mid] < K ở bước 1, ta có`, { A: `Left = 0, Right = mid - 1`, B: `Left = mid + 1, Right = mid - 1`, C: `Left = mid + 1, Right = len(A) - 1`, D: `Left = 0, Right = mid + 1` }, `A`),
-  q(46, `Trong thuật toán tìm kiếm nhị phân với dãy số A giảm dần thì khi A[mid] > K ở bước 1, ta có`, { A: `Left = 0, Right = mid - 1`, B: `Left = mid + 1, Right = mid - 1`, C: `Left = mid + 1, Right = len(A) - 1`, D: `Left = 0, Right = mid + 1` }, `C`),
-  q(
-    47,
-    `Thuật toán tìm kiếm nhị phân cần bao nhiêu bước để tìm thấy số 170 trong dãy số sau?`,
-    { A: `3`, B: `4`, C: `5`, D: `6` },
-    `B`,
-    {
-      code: `A = [1, 2, 3, 12, 14, 17, 19, 20, 25, 30, 36, 52, 56, 163, 170]`,
-    }
-  ),
-  q(
-    48,
-    `Thuật toán tìm kiếm nhị phân cần bao nhiêu bước để tìm thấy số 20 trong dãy số sau?`,
-    { A: `5`, B: `4`, C: `3`, D: `2` },
-    `D`,
-    {
-      code: `A = [0, 4, 9, 10, 12, 14, 17, 18, 20, 31, 34, 67]`,
-    }
-  ),
-  q(
-    49,
-    `Cho các câu sau, chọn câu sai?`,
-    {
-      A: `Với K = 17, thuật toán tìm kiếm tuần tự sẽ thực hiện 5 bước chạy`,
-      B: `Với K = 18, thuật toán tìm kiếm tuần tự thì chỉ số của K trong mảng A là 6`,
-      C: `Với K = 12, thuật toán tìm kiếm nhị phân sẽ thực hiện 3 bước chạy`,
-      D: `Với K = 11, thuật toán nhị phân sau khi chạy xong bước 1 thì phạm vi tìm kiếm được giới hạn thành [12, 17, 18, 21]`,
-    },
-    `A`,
-    {
-      code: `A = [1, 4, 5, 8, 12, 17, 18, 21]
-K = int(input("Moi nhap K:"))`,
-    }
-  ),
-  q(
-    50,
-    `Thuật toán tìm kiếm nhị phân cần bao nhiêu bước để tìm thấy số 163 trong dãy số sau?`,
-    { A: `3`, B: `4`, C: `5`, D: `14` },
-    `B`,
-    {
-      code: `A = [1, 2, 3, 12, 14, 17, 19, 20, 25, 30, 36, 52, 56, 163]`,
-    }
-  ),
-
-  // ===== Phần 4 =====
-  q(51, `Thuật toán sắp xếp nào hoạt động bằng cách so sánh từng cặp phần tử liên tiếp và đổi chỗ nếu chúng không đúng thứ tự?`, { A: `Sắp xếp chèn`, B: `Sắp xếp lựa chọn`, C: `Sắp xếp nổi bọt`, D: `Sắp xếp nhanh` }, `C`),
-  q(52, `Đâu là lệnh mở tệp để đọc?`, { A: `f = open(<file name>, "r", encoding="UTF-8")`, B: `f = open(<file name>, "a", encoding="UTF-8")`, C: `f = open(<file name>, "w", encoding="UTF-8")`, D: `f.close()` }, `A`),
-  q(53, `Đâu là lệnh đọc một dòng tiếp theo từ f?`, { A: `f.readlines()`, B: `L = list(f)`, C: `f.close()`, D: `f.readline()` }, `D`),
-  q(
-    54,
-    `Bổ sung đoạn lệnh sau để xuất ra mảng Diem từ tệp Data.txt.`,
-    {
-      A: `L = line.split()`,
-      B: `Ten.append(L[0])`,
-      C: `return Diem`,
-      D: `Không có đáp án`,
-    },
-    `A`,
-    {
-      code: `file = r"Data.txt"
-f = open(file, encoding="UTF-8")
-Diem = []
-for line in f:
-    ----------------------------
-    Diem.append(float(L[1]))
-f.close()
-print(Diem)
-
-Data.txt
-Hà 9.6
-Bình 8.5
-Quang 7.2`,
-    }
-  ),
-  q(
-    55,
-    `Giả sử có hai mảng Ten và Diem tương ứng với dữ liệu tên và điểm của học sinh trong lớp. Chương trình sau ghi những dòng thông tin này ra tệp "output.txt". Hỏi chương trình lỗi ở mấy dòng?`,
-    { A: `0`, B: `1`, C: `2`, D: `3` },
-    `C`,
-    {
-      imageNote: `Bản OCR hiện thiếu đoạn mã gốc của câu 55. Bạn nên thêm ảnh/đoạn mã gốc để luyện sát đề. Web hiện chấm theo key: C.`,
-    }
-  ),
-  q(56, `Các nhiệm vụ để thực hiện việc sắp xếp gồm những gì?`, { A: `Đổi chỗ`, B: `So sánh và đổi chỗ`, C: `So sánh`, D: `Xóa và đổi chỗ` }, `B`),
-  q(57, `Thuật toán sắp xếp nổi bọt sắp xếp danh sách bằng cách nào?`, { A: `Hoán đổi`, B: `Thay thế`, C: `Thay đổi`, D: `Sửa đổi` }, `A`),
-  q(58, `Trong thuật toán sắp xếp nổi bọt thì dấu hiệu để biết dãy chưa sắp xếp xong là gì?`, { A: `Vẫn còn cặp phần tử liền kề không đúng thứ tự mong muốn`, B: `Dãy chưa được sắp xếp tăng dần`, C: `Dãy chưa được sắp xếp giảm dần`, D: `Cả A, B và C` }, `A`),
-  q(59, `Thuật toán sắp xếp nổi bọt sắp xếp danh sách bằng cách hoán đổi các phần tử liền kề khi chúng chưa đúng vị trí bao nhiêu lần?`, { A: `Hai lần`, B: `Nhiều lần`, C: `Một lần`, D: `Mười lần` }, `B`),
-  q(60, `Cho dãy số 7, 9, 12, 5, 4. Nếu sử dụng thuật toán sắp xếp nổi bọt để sắp xếp dãy tăng dần thì sau bao nhiêu vòng lặp thuật toán kết thúc?`, { A: `3`, B: `4`, C: `5`, D: `6` }, `B`),
-  q(61, `Cho dãy số 7, 9, 12, 5, 4. Nếu sử dụng thuật toán sắp xếp nổi bọt để sắp xếp dãy tăng dần thì sau vòng lặp thứ 3 ta được dãy số nào?`, { A: `[7, 9, 5, 4, 12]`, B: `[7, 5, 4, 9, 12]`, C: `[4, 5, 7, 9, 12]`, D: `[5, 4, 7, 9, 12]` }, `D`),
-  q(62, `Cho dãy số 3, 12, 4, 15, 9. Nếu sử dụng thuật toán sắp xếp chọn để sắp xếp dãy tăng dần thì sau vòng lặp thứ 2 ta được dãy số nào?`, { A: `[3, 4, 12, 15, 9]`, B: `[3, 12, 4, 15, 9]`, C: `[3, 4, 9, 15, 12]`, D: `[3, 4, 9, 12, 15]` }, `A`),
-  q(63, `Bạn Vy thực hiện thuật toán sắp xếp chọn để sắp xếp dãy chữ cái A = ["c", "g", "q", "a", "h", "m"] theo thứ tự tăng dần. Ở vòng lặp đầu tiên ta sẽ đổi vị trí của hai chữ cái nào với nhau?`, { A: `g và c`, B: `q và g`, C: `a và c`, D: `q và h` }, `C`),
-  q(64, `Bạn An thực hiện thuật toán sắp xếp chọn để sắp xếp dãy số [64, 35, 17, 23, 11] theo thứ tự tăng dần. Kết thúc bước thứ 3 ta thu được dãy số nào?`, { A: `[11, 35, 17, 23, 64]`, B: `[11, 17, 23, 35, 64]`, C: `[11, 17, 35, 23, 64]`, D: `[64, 17, 23, 35, 11]` }, `B`),
-  q(65, `Cho dãy số 9, 7, 12, 5, 4. Nếu sử dụng thuật toán sắp xếp chèn để sắp xếp dãy tăng dần thì sau vòng lặp thứ 2 ta được dãy số nào?`, { A: `[4, 5, 7, 9, 12]`, B: `[5, 7, 9, 12, 4]`, C: `[7, 9, 12, 5, 4]`, D: `[7, 9, 12, 4, 5]` }, `C`),
-  q(66, `Cho dãy số 9, 7, 12, 5, 4. Nếu sử dụng thuật toán sắp xếp chèn để sắp xếp dãy tăng dần thì sau vòng lặp thứ 3 ta được dãy số nào?`, { A: `[4, 5, 7, 9, 12]`, B: `[5, 7, 9, 12, 4]`, C: `[7, 9, 12, 5, 4]`, D: `[7, 9, 12, 5, 4]` }, `B`),
-
-  // ===== Phần 5 =====
-  q(67, `Có bao nhiêu phương pháp để kiểm thử chương trình?`, { A: `1`, B: `2`, C: `3`, D: `4` }, `C`),
-  q(68, `Đâu không là công cụ để kiểm thử chương trình?`, { A: `Công cụ in biến trung gian`, B: `Công cụ thống kê dữ liệu`, C: `Công cụ sinh các bộ dữ liệu test`, D: `Công cụ điểm dừng trong phần mềm soạn thảo lập trình` }, `B`),
-  q(69, `Hoàn thành phát biểu sau: “Có rất nhiều công cụ và phương pháp khác nhau để kiểm thử chương trình. Các công cụ có mục đích … của chương trình và …, … các lỗi phát sinh trong tương lai”`, { A: `Tìm ra lỗi, phòng ngừa, ngăn chặn`, B: `Tìm ra lỗi, phòng ngừa, xử lí`, C: `Phòng ngừa, ngăn chặn, xử lí lỗi`, D: `Xử lí lỗi, phòng ngừa, ngăn chặn` }, `A`),
-  q(70, `Phát biểu nào sau đây đúng?`, { A: `Kiểm thử sẽ giảm độ tin cậy của chương trình và chưa chứng minh được tính đúng của thuật toán và chương trình`, B: `Kiểm thử sẽ tăng độ tin cậy của chương trình nhưng chưa chứng minh được tính đúng của thuật toán và chương trình`, C: `Kiểm thử sẽ tăng độ tin cậy của chương trình và chứng minh được tính đúng của thuật toán và chương trình`, D: `Kiểm thử sẽ giảm độ tin cậy của chương trình nhưng chưa chứng minh được tính đúng của thuật toán và chương trình` }, `B`),
-  q(71, `Tính đúng của thuật toán cần được chứng minh bằng gì?`, { A: `Thuật toán`, B: `Suy luận logic`, C: `Bộ dữ liệu kiểm thử`, D: `Lập luận toán học` }, `D`),
-  q(72, `Hiệu quả hay tính tối ưu của chương trình thường được xem xét trên cơ sở đánh giá nào?`, { A: `Độ phức tạp thời gian`, B: `Độ phức tạp không gian`, C: `Độ phức tạp tính toán`, D: `Độ phức tạp của tập tin` }, `C`),
-  q(73, `Hai tiêu chí đánh giá độ phức tạp tính toán quan trọng nhất là gì?`, { A: `Thời gian thực hiện và không gian bộ nhớ`, B: `Tính đúng và không gian bộ nhớ`, C: `Thuật toán và lập luận bài toán`, D: `Thời gian và tính tối ưu` }, `A`),
-  q(74, `Độ phức tạp thời gian của một chương trình đo lường điều gì?`, { A: `Không gian bộ nhớ được sử dụng bởi chương trình`, B: `Thời gian mà chương trình mất để hoàn thành một nhiệm vụ, dựa trên kích thước của dữ liệu đầu vào`, C: `Số lần thực hiện các phép toán cơ bản bởi chương trình`, D: `Tất cả các phương án trên` }, `B`),
-  q(75, `Độ phức tạp không gian của một chương trình đo lường điều gì?`, { A: `Không gian bộ nhớ được sử dụng bởi chương trình`, B: `Thời gian mà chương trình mất để hoàn thành một nhiệm vụ, dựa trên kích thước của dữ liệu đầu vào`, C: `Số lần thực hiện các phép toán cơ bản bởi chương trình`, D: `Tất cả các phương án trên` }, `A`),
-  q(76, `Một chương trình/thuật toán là hiệu quả nếu chương trình thực hiện phải như thế nào?`, { A: `Tốn ít thời gian nhưng nhiều bộ nhớ`, B: `Tốn nhiều thời gian và nhiều bộ nhớ`, C: `Tốn ít thời gian và ít bộ nhớ`, D: `Tốn nhiều thời gian nhưng ít bộ nhớ` }, `C`),
-  q(
-    77,
-    `Tìm kết quả ở vòng lặp 3 trong đoạn chương trình sau khi ta nhập dayso = ...`,
-    {
-      A: `Sau vòng 3 thì A = [5, 8, 0, 10, 4, 3] => điểm dừng j = 0`,
-      B: `Sau vòng 3 thì A = [0, 5, 8, 10, 4, 3] => điểm dừng j = -1`,
-      C: `Sau vòng 3 thì A = [0, 5, 8, 10, 4, 3] => điểm dừng j = 2`,
-      D: `Sau vòng 3 thì A = [0, 4, 5, 8, 10, 3] => điểm dừng j = 0`,
-    },
-    `C`,
-    {
-      imageNote: `Bản OCR hiện thiếu đoạn chương trình và dữ liệu dayso của câu 77. Bạn nên thêm ảnh/đoạn mã gốc. Web hiện chấm theo key: C.`,
-    }
-  ),
-  q(
-    78,
-    `Yêu cầu nhập số tự nhiên n và tính tổng 1 + 2 + ... + n. Sắp xếp thứ tự các bước chứng minh bằng phương pháp quy nạp để kiểm tra tính đúng của chương trình sau?`,
-    {
-      A: `B2, B1, B3, B4`,
-      B: `B1, B4, B3, B2`,
-      C: `B3, B1, B2, B4`,
-      D: `B2, B4, B3, B1`,
-    },
-    `D`,
-    {
-      code: `B1: Vậy chương trình đúng với mọi i
-B2: Chương trình đúng ở bước thứ nhất (i = 0): S = 0 + 0 = 0
-B3: Chương trình cũng đúng ở bước thứ i+1 (i = 6): S = 0 + 1 + 2 + 3 + 4 + 5 + 6
-B4: Giả sử chương trình đúng ở bước thứ i (i = 5): S = 0 + 1 + 2 + 3 + 4 + 5`,
-    }
-  ),
-  q(
-    79,
-    `Chương trình giải bài toán đếm số các ước số thực sự của số tự nhiên n này đúng hay sai? Nếu sai thì sửa như sau:`,
-    {
-      A: `Sai, sửa dòng 3 là k = 1`,
-      B: `Sai, sửa dòng 4 là k < n`,
-      C: `Sai, sửa dòng 3 là k = 1 và dòng 4 là k < n`,
-      D: `Đúng`,
-    },
-    `A`,
-    {
-      imageNote: `Bản OCR hiện thiếu chương trình gốc của câu 79. Bạn nên thêm ảnh/đoạn mã gốc để luyện sát đề. Web hiện chấm theo key: A.`,
-    }
-  ),
-  q(
-    80,
-    `Tìm lệnh còn thiếu trong chương trình xuất thời gian của thuật toán tìm kiếm tuần tự phần tử K = 9 của dãy số A sau.`,
-    {
-      A: `TKTT(A,9)`,
-      B: `LinearSearch(A)`,
-      C: `LinearSearch(A,9)`,
-      D: `linearsearch(A,9)`,
-    },
-    `C`,
-    {
-      note: `Nếu bạn có ảnh/đoạn mã gốc của câu 80, có thể bổ sung thêm để hiển thị sát đề hơn.`,
-    }
-  ),
-].map((item) => ({ ...item, ...getSectionInfo(item.id) }));
-
-const questionsById = Object.fromEntries(questions.map((item) => [item.id, item]));
+let sectionConfig = [];
+let assetNotes = [];
+let questions = [];
+let questionsById = {};
 
 const currentPage = document.body.dataset.page || "home";
 const getById = (id) => document.getElementById(id);
@@ -486,13 +97,106 @@ const dom = {
   toast: getById("toast"),
 };
 
-let state = loadState();
+let state = createDefaultState();
 let toastTimer = null;
 
-init();
+bootstrap();
+
+async function bootstrap() {
+  highlightActivePage();
+
+  try {
+    const data = await loadQuestionData();
+    applyQuestionData(data);
+  } catch (error) {
+    console.error(error);
+    showBootstrapError(
+      window.location.protocol === "file:"
+        ? "Không thể tải questions.json khi mở trực tiếp bằng file://. Hãy chạy bằng local server một lần để cache dữ liệu, hoặc mở lại sau khi đã có cache trước đó."
+        : "Không thể tải questions.json. Hãy kiểm tra file dữ liệu hoặc cách bạn đang chạy web."
+    );
+    return;
+  }
+
+  state = loadState();
+  init();
+}
+
+async function loadQuestionData() {
+  try {
+    const response = await fetch(QUESTIONS_DATA_URL, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Không tải được questions.json (${response.status}).`);
+    }
+
+    const data = await response.json();
+    validateQuestionData(data);
+    cacheQuestionData(data);
+    return data;
+  } catch (error) {
+    const cached = getCachedQuestionData();
+    if (cached) {
+      return cached;
+    }
+    throw error;
+  }
+}
+
+function validateQuestionData(data) {
+  if (!data || !Array.isArray(data.sectionConfig) || !Array.isArray(data.assetNotes) || !Array.isArray(data.questions)) {
+    throw new Error("Định dạng questions.json không hợp lệ.");
+  }
+}
+
+function applyQuestionData(data) {
+  sectionConfig = data.sectionConfig;
+  assetNotes = data.assetNotes;
+  questions = data.questions;
+  questionsById = Object.fromEntries(questions.map((item) => [item.id, item]));
+}
+
+function cacheQuestionData(data) {
+  try {
+    localStorage.setItem(QUESTIONS_CACHE_KEY, JSON.stringify(data));
+  } catch (error) {
+    // bo qua neu trinh duyet chan localStorage
+  }
+}
+
+function getCachedQuestionData() {
+  try {
+    const cached = JSON.parse(localStorage.getItem(QUESTIONS_CACHE_KEY) || "null");
+    validateQuestionData(cached);
+    return cached;
+  } catch (error) {
+    return null;
+  }
+}
+
+function showBootstrapError(message) {
+  document
+    .querySelectorAll(".hero-card, .quick-grid, .split-panel, .page-heading, .practice-layout, .stats-grid, .data-layout, .site-footer")
+    .forEach((element) => {
+      element.classList.add("hidden");
+    });
+
+  const errorCard = document.createElement("section");
+  errorCard.className = "card";
+  errorCard.innerHTML = `<p class="section-label">Lỗi tải dữ liệu</p><h1>Không thể khởi động bộ câu hỏi.</h1><p class="lead-text">${message}</p>`;
+
+  const shell = document.querySelector(".shell");
+  const header = document.querySelector(".site-header");
+
+  if (shell && header) {
+    shell.insertBefore(errorCard, header.nextSibling);
+  } else if (shell) {
+    shell.appendChild(errorCard);
+  } else {
+    alert(message);
+  }
+}
 
 function init() {
-  highlightActivePage();
   bindEvents();
 
   if (currentPage === "practice" && !state.session.questionIds.length) {
