@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thống kê | Ôn tập Tin học 11 HK2</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="stats">
+  <main class="shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">11</span>
+        <div>
+          <p class="brand-kicker">Tin học 11 • Học kỳ 2</p>
+          <p class="brand-name">Ôn tập trắc nghiệm</p>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <a class="nav-link" data-page-link="home" href="index.html">Trang chủ</a>
+        <a class="nav-link" data-page-link="practice" href="lam-bai.html">Làm bài</a>
+        <a class="nav-link" data-page-link="stats" href="thong-ke.html">Thống kê</a>
+        <a class="nav-link" data-page-link="data" href="du-lieu.html">Dữ liệu</a>
+      </nav>
+    </header>
+
+    <section class="page-heading">
+      <div>
+        <p class="section-label">Trang thống kê</p>
+        <h1>Nhìn tiến độ theo từng góc riêng.</h1>
+        <p class="lead-text">
+          Tất cả số liệu đã được tách khỏi trang chủ để bạn xem tiến độ, độ chính xác và phần cần ôn trong một khu vực riêng.
+        </p>
+      </div>
+
+      <div class="action-row">
+        <a class="btn btn-primary" href="lam-bai.html">Quay lại làm bài</a>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="card stat-card">
+        <span class="stat-label">Đã làm</span>
+        <strong id="statAttempted">0/80</strong>
+        <small id="statAttemptedDetail">0 lượt trả lời</small>
+      </article>
+
+      <article class="card stat-card">
+        <span class="stat-label">Chưa học</span>
+        <strong id="statUnseen">80</strong>
+        <small>Ưu tiên học mới</small>
+      </article>
+
+      <article class="card stat-card">
+        <span class="stat-label">Đang học</span>
+        <strong id="statLearning">0</strong>
+        <small>Đã biết nhưng chưa chắc</small>
+      </article>
+
+      <article class="card stat-card">
+        <span class="stat-label">Cần ôn</span>
+        <strong id="statReview">0</strong>
+        <small>Sai gần đây hoặc tự đánh dấu quên</small>
+      </article>
+
+      <article class="card stat-card">
+        <span class="stat-label">Đã chắc</span>
+        <strong id="statMastered">0</strong>
+        <small>Độ chính xác tốt</small>
+      </article>
+
+      <article class="card stat-card">
+        <span class="stat-label">Độ chính xác</span>
+        <strong id="statAccuracy">0%</strong>
+        <small id="statAccuracyDetail">0 câu đúng / 0 lần trả lời</small>
+      </article>
+    </section>
+
+    <section class="split-panel">
+      <article class="card">
+        <div class="card-heading align-start">
+          <div>
+            <p class="section-label">Theo từng phần</p>
+            <h2>Tổng quan từng nhóm câu</h2>
+          </div>
+        </div>
+
+        <div id="statsSectionGrid" class="section-summary-grid"></div>
+      </article>
+
+      <article class="card">
+        <div class="card-heading align-start">
+          <div>
+            <p class="section-label">Ưu tiên ôn</p>
+            <h2>Các câu cần xem lại</h2>
+          </div>
+        </div>
+
+        <div id="reviewQuestionList" class="review-list"></div>
+      </article>
+    </section>
+
+    <footer class="site-footer">
+      Mọi số liệu lấy từ cùng một bản lưu localStorage nên bạn có thể đổi trang mà không mất tiến trình.
+    </footer>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="javascript.js"></script>
+</body>
+</html>

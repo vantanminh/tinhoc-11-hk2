@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dữ liệu | Ôn tập Tin học 11 HK2</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="data">
+  <main class="shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">11</span>
+        <div>
+          <p class="brand-kicker">Tin học 11 • Học kỳ 2</p>
+          <p class="brand-name">Ôn tập trắc nghiệm</p>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <a class="nav-link" data-page-link="home" href="index.html">Trang chủ</a>
+        <a class="nav-link" data-page-link="practice" href="lam-bai.html">Làm bài</a>
+        <a class="nav-link" data-page-link="stats" href="thong-ke.html">Thống kê</a>
+        <a class="nav-link" data-page-link="data" href="du-lieu.html">Dữ liệu</a>
+      </nav>
+    </header>
+
+    <section class="page-heading">
+      <div>
+        <p class="section-label">Trang dữ liệu</p>
+        <h1>Sao lưu và đồng bộ tách riêng khỏi luồng học.</h1>
+        <p class="lead-text">
+          Mọi thao tác xuất, nhập và xóa tiến trình được gom vào đây để không chen vào trang làm bài.
+        </p>
+      </div>
+
+      <div class="action-row">
+        <a class="btn btn-secondary" href="lam-bai.html">Quay lại làm bài</a>
+        <a class="btn btn-ghost" href="thong-ke.html">Xem thống kê</a>
+      </div>
+    </section>
+
+    <section class="data-layout">
+      <article class="card">
+        <div class="card-heading align-start">
+          <div>
+            <p class="section-label">Sao lưu</p>
+            <h2>Xuất và nhập dữ liệu</h2>
+          </div>
+        </div>
+
+        <p class="muted-text">
+          Dữ liệu được lưu bằng localStorage. Nếu đổi thiết bị, chỉ cần xuất JSON rồi dán sang máy mới.
+        </p>
+
+        <textarea
+          id="syncDataBox"
+          placeholder="Dữ liệu xuất hoặc nhập sẽ hiện ở đây..."
+        ></textarea>
+
+        <div class="action-row wrap">
+          <button id="exportBtn" class="btn btn-primary" type="button">Xuất dữ liệu</button>
+          <button id="copyBtn" class="btn btn-secondary" type="button">Copy nhanh</button>
+          <button id="importBtn" class="btn btn-secondary" type="button">Nhập dữ liệu</button>
+          <button id="resetProgressBtn" class="btn btn-danger" type="button">
+            Xóa toàn bộ tiến trình
+          </button>
+        </div>
+
+        <p id="syncMessage" class="muted-text small-text">
+          Mẹo: trên điện thoại, copy toàn bộ đoạn JSON rồi dán sang thiết bị khác.
+        </p>
+      </article>
+
+      <aside class="stack-column">
+        <section class="card">
+          <div class="card-heading align-start">
+            <div>
+              <p class="section-label">Tổng quan lưu trữ</p>
+              <h2>Dữ liệu hiện có</h2>
+            </div>
+          </div>
+
+          <div id="dataOverview" class="data-overview-grid"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-heading align-start">
+            <div>
+              <p class="section-label">Thiếu dữ liệu gốc</p>
+              <h2>Các câu cần bổ sung ảnh hoặc mã</h2>
+            </div>
+          </div>
+
+          <ul id="assetNotesList" class="plain-list"></ul>
+        </section>
+      </aside>
+    </section>
+
+    <section class="card">
+      <div class="card-heading align-start">
+        <div>
+          <p class="section-label">Lưu ý</p>
+          <h2>Khi dùng trang dữ liệu</h2>
+        </div>
+      </div>
+
+      <ul class="plain-list">
+        <li>Nhập dữ liệu sẽ ghi đè bản lưu hiện tại trên trình duyệt này.</li>
+        <li>Nếu chỉ muốn xem tiến độ, hãy sang trang thống kê thay vì mở JSON.</li>
+        <li>Sau khi reset, bạn có thể quay lại trang làm bài để tạo lượt mới.</li>
+      </ul>
+    </section>
+
+    <footer class="site-footer">
+      Trang dữ liệu giữ riêng phần sao lưu để giao diện làm bài và thống kê gọn hơn.
+    </footer>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="javascript.js"></script>
+</body>
+</html>

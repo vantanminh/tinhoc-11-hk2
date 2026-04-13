@@ -3,238 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luyện trắc nghiệm Tin học 11 - HK2</title>
+  <title>Trang chủ | Ôn tập Tin học 11 HK2</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <main class="app">
-    <header class="hero panel">
-      <div>
-        <p class="eyebrow">Tin học 11 • Học kỳ 2</p>
-        <h1>Luyện trắc nghiệm thông minh</h1>
-        <p class="hero-subtext">
-          80 câu trắc nghiệm nhiều lựa chọn • chia theo phần • lưu tiến trình •
-          ưu tiên câu chưa học, câu cần ôn lại • dùng tốt trên laptop và điện thoại.
-        </p>
-      </div>
+<body data-page="home">
+  <main class="shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">11</span>
+        <div>
+          <p class="brand-kicker">Tin học 11 • Học kỳ 2</p>
+          <p class="brand-name">Ôn tập trắc nghiệm</p>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <a class="nav-link" data-page-link="home" href="index.html">Trang chủ</a>
+        <a class="nav-link" data-page-link="practice" href="lam-bai.html">Làm bài</a>
+        <a class="nav-link" data-page-link="stats" href="thong-ke.html">Thống kê</a>
+        <a class="nav-link" data-page-link="data" href="du-lieu.html">Dữ liệu</a>
+      </nav>
     </header>
 
-    <section class="stats-grid">
-      <article class="stat-card panel">
-        <span class="stat-label">Đã làm</span>
-        <strong id="statAttempted">0/80</strong>
-        <small id="statAttemptedDetail">0 lượt trả lời</small>
+    <section class="hero-card">
+      <div class="hero-copy">
+        <p class="section-label">Trang chủ</p>
+        <h1>Tách rõ từng khu vực để học gọn hơn.</h1>
+        <p class="hero-text">
+          Trang này chỉ giữ phần tổng quan. Phần làm bài, thống kê và dữ liệu đã
+          được chuyển sang trang riêng để tránh cảm giác dồn hết mọi thứ vào một chỗ.
+        </p>
+        <div class="action-row">
+          <a class="btn btn-primary" href="lam-bai.html">Mở trang làm bài</a>
+          <a class="btn btn-secondary" href="thong-ke.html">Xem thống kê</a>
+          <a class="btn btn-ghost" href="du-lieu.html">Quản lý dữ liệu</a>
+        </div>
+      </div>
+
+      <div class="hero-metrics">
+        <article class="metric-card">
+          <span>Đã học</span>
+          <strong id="homeAttempted">0/80</strong>
+        </article>
+        <article class="metric-card">
+          <span>Độ chính xác</span>
+          <strong id="homeAccuracy">0%</strong>
+        </article>
+        <article class="metric-card">
+          <span>Cần ôn</span>
+          <strong id="homeReview">0</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="quick-grid">
+      <a class="quick-link-card" href="lam-bai.html">
+        <p class="section-label">Làm bài</p>
+        <h2>Tạo lượt học ngắn</h2>
+        <p>Chỉ giữ thiết lập, câu hỏi và điều hướng của phiên hiện tại.</p>
+      </a>
+
+      <a class="quick-link-card" href="thong-ke.html">
+        <p class="section-label">Thống kê</p>
+        <h2>Xem tiến độ theo phần</h2>
+        <p>Theo dõi số câu đã học, độ chính xác và các câu cần ôn lại.</p>
+      </a>
+
+      <a class="quick-link-card" href="du-lieu.html">
+        <p class="section-label">Dữ liệu</p>
+        <h2>Xuất, nhập và reset</h2>
+        <p>Tách riêng phần sao lưu để không chen vào luồng làm bài.</p>
+      </a>
+    </section>
+
+    <section class="split-panel two-wide">
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="section-label">Lượt hiện tại</p>
+            <h2>Tiếp tục nơi đang dở</h2>
+          </div>
+          <a class="text-link" href="lam-bai.html">Mở làm bài</a>
+        </div>
+
+        <p id="homeSessionSummary" class="summary-line">
+          Chưa có lượt học nào được tạo.
+        </p>
+        <p id="homeSessionMeta" class="muted-text">
+          Vào trang làm bài để tạo hoặc tiếp tục lượt học.
+        </p>
       </article>
 
-      <article class="stat-card panel">
-        <span class="stat-label">Chưa học</span>
-        <strong id="statUnseen">80</strong>
-        <small>Ưu tiên học mới</small>
-      </article>
+      <article class="card">
+        <div class="card-heading">
+          <div>
+            <p class="section-label">Theo từng phần</p>
+            <h2>Tiến độ ngắn gọn</h2>
+          </div>
+          <a class="text-link" href="thong-ke.html">Xem đầy đủ</a>
+        </div>
 
-      <article class="stat-card panel">
-        <span class="stat-label">Đang học</span>
-        <strong id="statLearning">0</strong>
-        <small>Đã biết nhưng chưa chắc</small>
-      </article>
-
-      <article class="stat-card panel">
-        <span class="stat-label">Cần ôn</span>
-        <strong id="statReview">0</strong>
-        <small>Sai gần đây hoặc tự đánh dấu quên</small>
-      </article>
-
-      <article class="stat-card panel">
-        <span class="stat-label">Đã chắc</span>
-        <strong id="statMastered">0</strong>
-        <small>Độ chính xác tốt</small>
-      </article>
-
-      <article class="stat-card panel">
-        <span class="stat-label">Độ chính xác</span>
-        <strong id="statAccuracy">0%</strong>
-        <small id="statAccuracyDetail">0 câu đúng / 0 lần trả lời</small>
+        <div id="homeSectionOverview" class="section-summary-grid compact"></div>
       </article>
     </section>
 
-    <div class="layout">
-      <section class="column-main">
-        <section class="panel control-panel">
-          <div class="panel-title-row">
-            <div>
-              <h2>Thiết lập lượt luyện</h2>
-              <p id="sessionMetaText" class="muted-text">
-                Dữ liệu được lưu tự động trên trình duyệt này.
-              </p>
-            </div>
-          </div>
-
-          <div id="sectionChips" class="section-chips"></div>
-
-          <div class="control-grid">
-            <label class="control-field">
-              <span>Chế độ luyện</span>
-              <select id="modeSelect">
-                <option value="smart">Thông minh</option>
-                <option value="all">Tất cả câu trong phần</option>
-                <option value="unseen">Chỉ câu chưa học</option>
-                <option value="review">Chỉ câu cần ôn</option>
-                <option value="learning">Chỉ câu đang học</option>
-                <option value="mastered">Chỉ câu đã chắc</option>
-              </select>
-            </label>
-
-            <label class="control-field">
-              <span>Số câu cho lượt này</span>
-              <select id="countSelect">
-                <option value="10">10 câu</option>
-                <option value="15">15 câu</option>
-                <option value="20">20 câu</option>
-                <option value="30">30 câu</option>
-                <option value="40">40 câu</option>
-                <option value="all">Tất cả câu trong phần</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="toggle-row">
-            <label class="toggle-pill">
-              <input type="checkbox" id="shuffleToggle" />
-              <span>Đảo câu hỏi</span>
-            </label>
-          </div>
-
-          <div class="control-actions">
-            <button id="buildSessionBtn" class="btn btn-primary" type="button">
-              Áp dụng & tạo lượt học
-            </button>
-            <button id="continueSmartBtn" class="btn btn-secondary" type="button">
-              10 câu ưu tiên
-            </button>
-          </div>
-        </section>
-
-        <article class="panel question-panel">
-          <div class="question-head">
-            <div class="badge-row">
-              <span id="questionSectionBadge" class="badge badge-accent">Phần</span>
-              <span id="questionStatusBadge" class="badge">Trạng thái</span>
-            </div>
-            <div class="question-position">
-              <span id="currentIndexLabel">0</span>/<span id="totalCountLabel">0</span>
-            </div>
-          </div>
-
-          <div class="reading-progress">
-            <div id="sessionProgressBar"></div>
-          </div>
-
-          <h2 id="questionTitle" class="question-title">Đang tải câu hỏi...</h2>
-
-          <pre id="questionCode" class="question-code hidden"></pre>
-
-          <div id="questionImageWrap" class="question-image-wrap hidden">
-            <img id="questionImage" alt="Ảnh minh họa câu hỏi" />
-          </div>
-
-          <div id="questionImageNote" class="inline-note warning hidden"></div>
-          <div id="questionNote" class="inline-note hidden"></div>
-
-          <div id="optionsList" class="options-list"></div>
-
-          <div id="feedbackBox" class="feedback-box hidden"></div>
-
-          <div class="question-actions">
-            <button id="prevBtn" class="btn btn-ghost" type="button">← Câu trước</button>
-            <button id="toggleReviewBtn" class="btn btn-secondary" type="button">
-              Đánh dấu cần ôn
-            </button>
-            <button id="nextBtn" class="btn btn-primary" type="button">Câu tiếp →</button>
-          </div>
-        </article>
-      </section>
-
-      <aside class="column-side">
-        <section class="panel">
-          <div class="panel-title-row">
-            <h3>Tiến trình lượt hiện tại</h3>
-            <span id="sessionResultText" class="mini-pill">Chưa trả lời</span>
-          </div>
-
-          <div class="session-overview">
-            <div class="mini-card">
-              <span>Đã trả lời</span>
-              <strong id="sessionAnswered">0</strong>
-            </div>
-            <div class="mini-card">
-              <span>Đúng</span>
-              <strong id="sessionCorrect">0</strong>
-            </div>
-            <div class="mini-card">
-              <span>Sai</span>
-              <strong id="sessionWrong">0</strong>
-            </div>
-            <div class="mini-card">
-              <span>Còn lại</span>
-              <strong id="sessionRemaining">0</strong>
-            </div>
-          </div>
-
-          <div id="questionNavigator" class="navigator-grid"></div>
-
-          <div class="jump-row">
-            <input
-              id="jumpInput"
-              type="number"
-              min="1"
-              placeholder="Đi tới vị trí trong lượt"
-            />
-            <button id="jumpBtn" class="btn btn-secondary" type="button">Đi đến</button>
-          </div>
-        </section>
-
-        <details class="panel" open>
-          <summary>Sao lưu / đồng bộ tiến trình</summary>
-          <p class="muted-text">
-            Tiến trình được lưu bằng localStorage. Nếu đổi thiết bị, bấm xuất dữ liệu
-            rồi copy/paste sang máy mới.
-          </p>
-          <textarea
-            id="syncDataBox"
-            placeholder="Dữ liệu xuất/nhập sẽ hiện ở đây..."
-          ></textarea>
-          <div class="stack-actions">
-            <button id="exportBtn" class="btn btn-primary" type="button">Xuất dữ liệu</button>
-            <button id="copyBtn" class="btn btn-secondary" type="button">Copy nhanh</button>
-            <button id="importBtn" class="btn btn-secondary" type="button">Nhập dữ liệu</button>
-            <button id="resetProgressBtn" class="btn btn-danger" type="button">
-              Xóa toàn bộ tiến trình
-            </button>
-          </div>
-          <p id="syncMessage" class="muted-text small-text">
-            Mẹo: trên điện thoại, chỉ cần copy toàn bộ đoạn JSON rồi dán vào máy khác.
-          </p>
-        </details>
-
-        <details class="panel">
-          <summary>Ghi chú câu cần thêm ảnh / đoạn mã gốc</summary>
-          <ul id="assetNotesList" class="asset-list"></ul>
-        </details>
-
-        <section class="panel help-panel">
-          <h3>Mẹo dùng nhanh</h3>
-          <ul class="help-list">
-            <li>Nhấn A / B / C / D trên bàn phím để chọn đáp án.</li>
-            <li>Dùng phím mũi tên trái/phải để chuyển câu.</li>
-            <li>“Đánh dấu cần ôn” cho câu đã học rồi nhưng vẫn dễ quên.</li>
-            <li>Chế độ “Thông minh” sẽ ưu tiên câu chưa học và câu cần ôn.</li>
-          </ul>
-        </section>
-      </aside>
-    </div>
-
-    <footer class="footer-note">
-      Đáp án được chấm theo key bạn cung cấp. Web chạy thuần HTML/CSS/JS, có thể mở offline.
+    <footer class="site-footer">
+      Web vẫn chạy thuần HTML, CSS, JavaScript và lưu tiến trình bằng localStorage.
     </footer>
   </main>
 

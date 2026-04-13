@@ -415,61 +415,75 @@ B4: Giả sử chương trình đúng ở bước thứ i (i = 5): S = 0 + 1 + 2
 
 const questionsById = Object.fromEntries(questions.map((item) => [item.id, item]));
 
+const currentPage = document.body.dataset.page || "home";
+const getById = (id) => document.getElementById(id);
+
 const dom = {
-  sectionChips: document.getElementById("sectionChips"),
-  modeSelect: document.getElementById("modeSelect"),
-  countSelect: document.getElementById("countSelect"),
-  shuffleToggle: document.getElementById("shuffleToggle"),
-  buildSessionBtn: document.getElementById("buildSessionBtn"),
-  continueSmartBtn: document.getElementById("continueSmartBtn"),
+  navLinks: Array.from(document.querySelectorAll("[data-page-link]")),
 
-  statAttempted: document.getElementById("statAttempted"),
-  statAttemptedDetail: document.getElementById("statAttemptedDetail"),
-  statUnseen: document.getElementById("statUnseen"),
-  statLearning: document.getElementById("statLearning"),
-  statReview: document.getElementById("statReview"),
-  statMastered: document.getElementById("statMastered"),
-  statAccuracy: document.getElementById("statAccuracy"),
-  statAccuracyDetail: document.getElementById("statAccuracyDetail"),
+  homeAttempted: getById("homeAttempted"),
+  homeAccuracy: getById("homeAccuracy"),
+  homeReview: getById("homeReview"),
+  homeSessionSummary: getById("homeSessionSummary"),
+  homeSessionMeta: getById("homeSessionMeta"),
+  homeSectionOverview: getById("homeSectionOverview"),
 
-  sessionMetaText: document.getElementById("sessionMetaText"),
+  sectionChips: getById("sectionChips"),
+  modeSelect: getById("modeSelect"),
+  countSelect: getById("countSelect"),
+  shuffleToggle: getById("shuffleToggle"),
+  buildSessionBtn: getById("buildSessionBtn"),
+  continueSmartBtn: getById("continueSmartBtn"),
+  sessionMetaText: getById("sessionMetaText"),
+
+  statAttempted: getById("statAttempted"),
+  statAttemptedDetail: getById("statAttemptedDetail"),
+  statUnseen: getById("statUnseen"),
+  statLearning: getById("statLearning"),
+  statReview: getById("statReview"),
+  statMastered: getById("statMastered"),
+  statAccuracy: getById("statAccuracy"),
+  statAccuracyDetail: getById("statAccuracyDetail"),
+  statsSectionGrid: getById("statsSectionGrid"),
+  reviewQuestionList: getById("reviewQuestionList"),
 
   questionPanel: document.querySelector(".question-panel"),
-  questionSectionBadge: document.getElementById("questionSectionBadge"),
-  questionStatusBadge: document.getElementById("questionStatusBadge"),
-  currentIndexLabel: document.getElementById("currentIndexLabel"),
-  totalCountLabel: document.getElementById("totalCountLabel"),
-  sessionProgressBar: document.getElementById("sessionProgressBar"),
-  questionTitle: document.getElementById("questionTitle"),
-  questionCode: document.getElementById("questionCode"),
-  questionImageWrap: document.getElementById("questionImageWrap"),
-  questionImage: document.getElementById("questionImage"),
-  questionImageNote: document.getElementById("questionImageNote"),
-  questionNote: document.getElementById("questionNote"),
-  optionsList: document.getElementById("optionsList"),
-  feedbackBox: document.getElementById("feedbackBox"),
-  prevBtn: document.getElementById("prevBtn"),
-  toggleReviewBtn: document.getElementById("toggleReviewBtn"),
-  nextBtn: document.getElementById("nextBtn"),
+  questionSectionBadge: getById("questionSectionBadge"),
+  questionStatusBadge: getById("questionStatusBadge"),
+  currentIndexLabel: getById("currentIndexLabel"),
+  totalCountLabel: getById("totalCountLabel"),
+  sessionProgressBar: getById("sessionProgressBar"),
+  questionTitle: getById("questionTitle"),
+  questionCode: getById("questionCode"),
+  questionImageWrap: getById("questionImageWrap"),
+  questionImage: getById("questionImage"),
+  questionImageNote: getById("questionImageNote"),
+  questionNote: getById("questionNote"),
+  optionsList: getById("optionsList"),
+  feedbackBox: getById("feedbackBox"),
+  prevBtn: getById("prevBtn"),
+  toggleReviewBtn: getById("toggleReviewBtn"),
+  nextBtn: getById("nextBtn"),
 
-  sessionResultText: document.getElementById("sessionResultText"),
-  sessionAnswered: document.getElementById("sessionAnswered"),
-  sessionCorrect: document.getElementById("sessionCorrect"),
-  sessionWrong: document.getElementById("sessionWrong"),
-  sessionRemaining: document.getElementById("sessionRemaining"),
-  questionNavigator: document.getElementById("questionNavigator"),
-  jumpInput: document.getElementById("jumpInput"),
-  jumpBtn: document.getElementById("jumpBtn"),
+  sessionResultText: getById("sessionResultText"),
+  sessionAnswered: getById("sessionAnswered"),
+  sessionCorrect: getById("sessionCorrect"),
+  sessionWrong: getById("sessionWrong"),
+  sessionRemaining: getById("sessionRemaining"),
+  questionNavigator: getById("questionNavigator"),
+  jumpInput: getById("jumpInput"),
+  jumpBtn: getById("jumpBtn"),
 
-  syncDataBox: document.getElementById("syncDataBox"),
-  exportBtn: document.getElementById("exportBtn"),
-  copyBtn: document.getElementById("copyBtn"),
-  importBtn: document.getElementById("importBtn"),
-  resetProgressBtn: document.getElementById("resetProgressBtn"),
-  syncMessage: document.getElementById("syncMessage"),
+  dataOverview: getById("dataOverview"),
+  syncDataBox: getById("syncDataBox"),
+  exportBtn: getById("exportBtn"),
+  copyBtn: getById("copyBtn"),
+  importBtn: getById("importBtn"),
+  resetProgressBtn: getById("resetProgressBtn"),
+  syncMessage: getById("syncMessage"),
+  assetNotesList: getById("assetNotesList"),
 
-  assetNotesList: document.getElementById("assetNotesList"),
-  toast: document.getElementById("toast"),
+  toast: getById("toast"),
 };
 
 let state = loadState();
@@ -478,72 +492,107 @@ let toastTimer = null;
 init();
 
 function init() {
+  highlightActivePage();
   bindEvents();
-  renderAssetNotes();
 
-  if (!state.session.questionIds.length) {
-    buildSession();
-  } else {
-    renderAll();
+  if (currentPage === "practice" && !state.session.questionIds.length) {
+    buildSession(null, { notify: false, scroll: false });
+    return;
   }
+
+  renderAll();
 }
 
 function bindEvents() {
-  dom.modeSelect.addEventListener("change", () => {
-    state.settings.mode = dom.modeSelect.value;
-    saveState();
-    renderSettings();
-  });
-
-  dom.countSelect.addEventListener("change", () => {
-    state.settings.count = dom.countSelect.value === "all" ? "all" : Number(dom.countSelect.value);
-    saveState();
-    renderSettings();
-  });
-
-  dom.shuffleToggle.addEventListener("change", () => {
-    state.settings.shuffle = !!dom.shuffleToggle.checked;
-    saveState();
-    renderSettings();
-  });
-
-  dom.buildSessionBtn.addEventListener("click", () => {
-    buildSession();
-  });
-
-  dom.continueSmartBtn.addEventListener("click", () => {
-    buildSession({
-      mode: "smart",
-      count: 10,
-      shuffle: true,
+  if (dom.modeSelect) {
+    dom.modeSelect.addEventListener("change", () => {
+      state.settings.mode = dom.modeSelect.value;
+      saveState();
+      renderSettings();
     });
-  });
+  }
 
-  dom.prevBtn.addEventListener("click", () => {
-    goToQuestion(state.session.currentIndex - 1);
-  });
+  if (dom.countSelect) {
+    dom.countSelect.addEventListener("change", () => {
+      state.settings.count = dom.countSelect.value === "all" ? "all" : Number(dom.countSelect.value);
+      saveState();
+      renderSettings();
+    });
+  }
 
-  dom.nextBtn.addEventListener("click", () => {
-    goToQuestion(state.session.currentIndex + 1);
-  });
+  if (dom.shuffleToggle) {
+    dom.shuffleToggle.addEventListener("change", () => {
+      state.settings.shuffle = !!dom.shuffleToggle.checked;
+      saveState();
+      renderSettings();
+    });
+  }
 
-  dom.toggleReviewBtn.addEventListener("click", () => {
-    toggleManualReview();
-  });
+  if (dom.buildSessionBtn) {
+    dom.buildSessionBtn.addEventListener("click", () => {
+      buildSession();
+    });
+  }
 
-  dom.jumpBtn.addEventListener("click", jumpToPosition);
-  dom.jumpInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      jumpToPosition();
-    }
-  });
+  if (dom.continueSmartBtn) {
+    dom.continueSmartBtn.addEventListener("click", () => {
+      buildSession({
+        mode: "smart",
+        count: 10,
+        shuffle: true,
+      });
+    });
+  }
 
-  dom.exportBtn.addEventListener("click", exportData);
-  dom.copyBtn.addEventListener("click", copyData);
-  dom.importBtn.addEventListener("click", importData);
-  dom.resetProgressBtn.addEventListener("click", resetAllProgress);
+  if (dom.prevBtn) {
+    dom.prevBtn.addEventListener("click", () => {
+      goToQuestion(state.session.currentIndex - 1);
+    });
+  }
 
-  window.addEventListener("keydown", handleKeyboard);
+  if (dom.nextBtn) {
+    dom.nextBtn.addEventListener("click", () => {
+      goToQuestion(state.session.currentIndex + 1);
+    });
+  }
+
+  if (dom.toggleReviewBtn) {
+    dom.toggleReviewBtn.addEventListener("click", () => {
+      toggleManualReview();
+    });
+  }
+
+  if (dom.jumpBtn) {
+    dom.jumpBtn.addEventListener("click", jumpToPosition);
+  }
+
+  if (dom.jumpInput) {
+    dom.jumpInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        jumpToPosition();
+      }
+    });
+  }
+
+  if (dom.exportBtn) {
+    dom.exportBtn.addEventListener("click", exportData);
+  }
+
+  if (dom.copyBtn) {
+    dom.copyBtn.addEventListener("click", copyData);
+  }
+
+  if (dom.importBtn) {
+    dom.importBtn.addEventListener("click", importData);
+  }
+
+  if (dom.resetProgressBtn) {
+    dom.resetProgressBtn.addEventListener("click", resetAllProgress);
+  }
+
+  if (dom.questionPanel) {
+    window.addEventListener("keydown", handleKeyboard);
+  }
 }
 
 function createDefaultState() {
@@ -671,18 +720,44 @@ function loadState() {
 
 function saveState() {
   try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        version: APP_VERSION,
-        questionStats: state.questionStats,
-        settings: state.settings,
-        session: state.session,
-      })
-    );
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(getPersistedState()));
   } catch (error) {
     // im lặng để tránh làm gián đoạn trải nghiệm trên máy chặn storage
   }
+}
+
+function getPersistedState() {
+  return {
+    version: APP_VERSION,
+    questionStats: state.questionStats,
+    settings: state.settings,
+    session: state.session,
+  };
+}
+
+function highlightActivePage() {
+  dom.navLinks.forEach((link) => {
+    const isCurrent = link.dataset.pageLink === currentPage;
+    if (isCurrent) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
+
+function formatDateTime(timestamp) {
+  return timestamp ? new Date(timestamp).toLocaleString("vi-VN") : "chưa có";
+}
+
+function truncateText(text, maxLength = 88) {
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
+function getStorageSizeLabel() {
+  const size = JSON.stringify(getPersistedState()).length;
+  return `${Math.max(1, Math.round(size / 1024))} KB`;
 }
 
 function getSelectedSectionMeta() {
@@ -756,6 +831,94 @@ function getRequestedCount(total) {
   return Math.min(Number(state.settings.count) || total, total);
 }
 
+function getGlobalMetrics() {
+  let attempted = 0;
+  let totalAttempts = 0;
+  let totalCorrect = 0;
+  let unseen = 0;
+  let learning = 0;
+  let review = 0;
+  let mastered = 0;
+
+  questions.forEach((question) => {
+    const stat = getStat(question.id);
+    const status = getQuestionStatus(question.id);
+
+    if (stat.attempts > 0) attempted += 1;
+    totalAttempts += stat.attempts;
+    totalCorrect += stat.correct;
+
+    if (status === "unseen") unseen += 1;
+    if (status === "learning") learning += 1;
+    if (status === "review") review += 1;
+    if (status === "mastered") mastered += 1;
+  });
+
+  return {
+    attempted,
+    totalAttempts,
+    totalCorrect,
+    unseen,
+    learning,
+    review,
+    mastered,
+    accuracy: totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0,
+  };
+}
+
+function getSectionMetrics(sectionId) {
+  const pool = getPoolBySection(sectionId);
+  let attempted = 0;
+  let totalAttempts = 0;
+  let totalCorrect = 0;
+  let unseen = 0;
+  let learning = 0;
+  let review = 0;
+  let mastered = 0;
+
+  pool.forEach((question) => {
+    const stat = getStat(question.id);
+    const status = getQuestionStatus(question.id);
+
+    if (stat.attempts > 0) attempted += 1;
+    totalAttempts += stat.attempts;
+    totalCorrect += stat.correct;
+
+    if (status === "unseen") unseen += 1;
+    if (status === "learning") learning += 1;
+    if (status === "review") review += 1;
+    if (status === "mastered") mastered += 1;
+  });
+
+  return {
+    total: pool.length,
+    attempted,
+    totalAttempts,
+    totalCorrect,
+    unseen,
+    learning,
+    review,
+    mastered,
+    accuracy: totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0,
+  };
+}
+
+function getSessionMetrics() {
+  const total = state.session.questionIds.length;
+  const answers = Object.values(state.session.answers);
+  const answered = answers.length;
+  const correct = answers.filter((item) => item.isCorrect).length;
+  const wrong = answered - correct;
+
+  return {
+    total,
+    answered,
+    correct,
+    wrong,
+    remaining: Math.max(total - answered, 0),
+  };
+}
+
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -764,7 +927,10 @@ function shuffleArray(array) {
   return array;
 }
 
-function buildSession(customSettings = null) {
+function buildSession(customSettings = null, options = {}) {
+  const notify = options.notify !== false;
+  const shouldScroll = options.scroll !== false;
+
   state.settings = normalizeSettings({ ...state.settings, ...(customSettings || {}) });
 
   const pool = getPoolBySection(state.settings.selectedSection);
@@ -816,26 +982,38 @@ function buildSession(customSettings = null) {
 
   saveState();
   renderAll();
-  scrollQuestionIntoView();
+  if (shouldScroll && currentPage === "practice") {
+    scrollQuestionIntoView();
+  }
 
-  showToast(
-    usedFallback
-      ? `Bộ lọc hiện chưa có câu phù hợp. Mình đã chuyển sang tất cả câu trong phần đã chọn (${state.session.questionIds.length} câu).`
-      : `Đã tạo lượt học ${state.session.questionIds.length} câu.`,
-    usedFallback ? "info" : "success"
-  );
+  if (notify) {
+    showToast(
+      usedFallback
+        ? `Bộ lọc hiện chưa có câu phù hợp. Mình đã chuyển sang tất cả câu trong phần đã chọn (${state.session.questionIds.length} câu).`
+        : `Đã tạo lượt học ${state.session.questionIds.length} câu.`,
+      usedFallback ? "info" : "success"
+    );
+  }
 }
 
 function renderAll() {
+  renderHomeOverview();
   renderSectionChips();
   renderSettings();
   renderGlobalStats();
+  renderSectionSummaryCards(dom.homeSectionOverview);
+  renderSectionSummaryCards(dom.statsSectionGrid);
+  renderReviewQuestionList();
+  renderDataOverview();
+  renderAssetNotes();
   renderSessionOverview();
   renderCurrentQuestion();
   renderNavigator();
 }
 
 function renderSectionChips() {
+  if (!dom.sectionChips) return;
+
   dom.sectionChips.innerHTML = "";
 
   sectionConfig.forEach((section) => {
@@ -854,6 +1032,10 @@ function renderSectionChips() {
 }
 
 function renderSettings() {
+  if (!dom.modeSelect || !dom.countSelect || !dom.shuffleToggle || !dom.sessionMetaText) {
+    return;
+  }
+
   dom.modeSelect.value = state.settings.mode;
   dom.countSelect.value = String(state.settings.count);
   dom.shuffleToggle.checked = !!state.settings.shuffle;
@@ -869,55 +1051,191 @@ function renderSettings() {
 }
 
 function renderGlobalStats() {
-  let attempted = 0;
-  let totalAttempts = 0;
-  let totalCorrect = 0;
-  let unseen = 0;
-  let learning = 0;
-  let review = 0;
-  let mastered = 0;
+  const metrics = getGlobalMetrics();
 
-  questions.forEach((question) => {
+  if (dom.statAttempted) {
+    dom.statAttempted.textContent = `${metrics.attempted}/${questions.length}`;
+  }
+  if (dom.statAttemptedDetail) {
+    dom.statAttemptedDetail.textContent = `${metrics.totalAttempts} lượt trả lời`;
+  }
+  if (dom.statUnseen) {
+    dom.statUnseen.textContent = metrics.unseen;
+  }
+  if (dom.statLearning) {
+    dom.statLearning.textContent = metrics.learning;
+  }
+  if (dom.statReview) {
+    dom.statReview.textContent = metrics.review;
+  }
+  if (dom.statMastered) {
+    dom.statMastered.textContent = metrics.mastered;
+  }
+  if (dom.statAccuracy) {
+    dom.statAccuracy.textContent = `${metrics.accuracy}%`;
+  }
+  if (dom.statAccuracyDetail) {
+    dom.statAccuracyDetail.textContent = `${metrics.totalCorrect} câu đúng / ${metrics.totalAttempts} lần trả lời`;
+  }
+}
+
+function renderHomeOverview() {
+  const metrics = getGlobalMetrics();
+  const sessionMetrics = getSessionMetrics();
+
+  if (dom.homeAttempted) {
+    dom.homeAttempted.textContent = `${metrics.attempted}/${questions.length}`;
+  }
+
+  if (dom.homeAccuracy) {
+    dom.homeAccuracy.textContent = `${metrics.accuracy}%`;
+  }
+
+  if (dom.homeReview) {
+    dom.homeReview.textContent = String(metrics.review);
+  }
+
+  if (dom.homeSessionSummary) {
+    dom.homeSessionSummary.textContent = sessionMetrics.total
+      ? `Lượt hiện tại đã trả lời ${sessionMetrics.answered}/${sessionMetrics.total} câu.`
+      : "Chưa có lượt học nào được tạo.";
+  }
+
+  if (dom.homeSessionMeta) {
+    dom.homeSessionMeta.textContent = sessionMetrics.total
+      ? `Đúng ${sessionMetrics.correct} • Sai ${sessionMetrics.wrong} • Tạo lúc ${formatDateTime(state.session.createdAt)}.`
+      : "Vào trang làm bài để tạo hoặc tiếp tục lượt học.";
+  }
+}
+
+function renderSectionSummaryCards(container) {
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  sectionConfig
+    .filter((section) => section.id !== "all")
+    .forEach((section) => {
+      const metrics = getSectionMetrics(section.id);
+      const progress = metrics.total ? Math.round((metrics.attempted / metrics.total) * 100) : 0;
+      const card = document.createElement("article");
+      card.className = "section-summary-card";
+      card.innerHTML = `
+        <div class="section-summary-head">
+          <div>
+            <h3>${section.title}</h3>
+            <p>${section.subtitle}</p>
+          </div>
+          <strong>${metrics.attempted}/${metrics.total}</strong>
+        </div>
+        <div class="meter"><span style="width: ${progress}%"></span></div>
+        <div class="section-tags">
+          <span>Chưa học ${metrics.unseen}</span>
+          <span>Đang học ${metrics.learning}</span>
+          <span>Cần ôn ${metrics.review}</span>
+          <span>Đã chắc ${metrics.mastered}</span>
+        </div>
+        <p class="section-summary-note">Độ chính xác ${metrics.accuracy}%</p>
+      `;
+      container.appendChild(card);
+    });
+}
+
+function renderReviewQuestionList() {
+  if (!dom.reviewQuestionList) return;
+
+  const reviewQuestions = questions
+    .filter((question) => getQuestionStatus(question.id) === "review")
+    .sort((left, right) => getPriority(right.id) - getPriority(left.id))
+    .slice(0, 12);
+
+  dom.reviewQuestionList.innerHTML = "";
+
+  if (!reviewQuestions.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-state";
+    empty.textContent = "Chưa có câu nào đang ở trạng thái cần ôn.";
+    dom.reviewQuestionList.appendChild(empty);
+    return;
+  }
+
+  reviewQuestions.forEach((question) => {
     const stat = getStat(question.id);
-    const status = getQuestionStatus(question.id);
+    const item = document.createElement("article");
+    item.className = "review-item";
 
-    if (stat.attempts > 0) attempted += 1;
-    totalAttempts += stat.attempts;
-    totalCorrect += stat.correct;
+    const content = document.createElement("div");
+    const title = document.createElement("h3");
+    title.textContent = `Câu ${question.id}. ${truncateText(question.stem)}`;
 
-    if (status === "unseen") unseen += 1;
-    if (status === "learning") learning += 1;
-    if (status === "review") review += 1;
-    if (status === "mastered") mastered += 1;
+    const meta = document.createElement("p");
+    meta.textContent = `${question.sectionTitle} • Sai ${stat.wrong} lần • Cập nhật ${formatDateTime(stat.lastAnsweredAt)}`;
+
+    content.appendChild(title);
+    content.appendChild(meta);
+
+    const side = document.createElement("div");
+    side.className = "review-item-meta";
+
+    const tag = document.createElement("span");
+    tag.textContent = stat.manualReview ? "Đã đánh dấu" : "Sai gần đây";
+
+    const accuracy = document.createElement("span");
+    accuracy.textContent = stat.attempts ? `${Math.round(getAccuracy(stat) * 100)}% đúng` : "Chưa trả lời";
+
+    side.appendChild(tag);
+    side.appendChild(accuracy);
+
+    item.appendChild(content);
+    item.appendChild(side);
+    dom.reviewQuestionList.appendChild(item);
   });
+}
 
-  const accuracy = totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
+function renderDataOverview() {
+  if (!dom.dataOverview) return;
 
-  dom.statAttempted.textContent = `${attempted}/${questions.length}`;
-  dom.statAttemptedDetail.textContent = `${totalAttempts} lượt trả lời`;
-  dom.statUnseen.textContent = unseen;
-  dom.statLearning.textContent = learning;
-  dom.statReview.textContent = review;
-  dom.statMastered.textContent = mastered;
-  dom.statAccuracy.textContent = `${accuracy}%`;
-  dom.statAccuracyDetail.textContent = `${totalCorrect} câu đúng / ${totalAttempts} lần trả lời`;
+  const metrics = getGlobalMetrics();
+  const sessionMetrics = getSessionMetrics();
+  const cards = [
+    { label: "Đã học", value: `${metrics.attempted}/${questions.length}` },
+    { label: "Cần ôn", value: String(metrics.review) },
+    { label: "Lượt hiện tại", value: sessionMetrics.total ? `${sessionMetrics.answered}/${sessionMetrics.total}` : "Chưa tạo" },
+    { label: "Dung lượng", value: getStorageSizeLabel() },
+  ];
+
+  dom.dataOverview.innerHTML = "";
+
+  cards.forEach((entry) => {
+    const card = document.createElement("article");
+    card.className = "data-point";
+    card.innerHTML = `<span>${entry.label}</span><strong>${entry.value}</strong>`;
+    dom.dataOverview.appendChild(card);
+  });
 }
 
 function renderSessionOverview() {
-  const total = state.session.questionIds.length;
-  const answers = Object.values(state.session.answers);
-  const answered = answers.length;
-  const correct = answers.filter((item) => item.isCorrect).length;
-  const wrong = answered - correct;
+  if (!dom.sessionAnswered || !dom.sessionCorrect || !dom.sessionWrong || !dom.sessionRemaining) {
+    return;
+  }
 
-  dom.sessionAnswered.textContent = answered;
-  dom.sessionCorrect.textContent = correct;
-  dom.sessionWrong.textContent = wrong;
-  dom.sessionRemaining.textContent = Math.max(total - answered, 0);
-  dom.sessionResultText.textContent = answered ? `${correct} đúng • ${wrong} sai` : "Chưa trả lời";
+  const metrics = getSessionMetrics();
 
-  dom.jumpInput.max = total || 1;
-  dom.jumpInput.placeholder = total ? `1 - ${total}` : "1";
+  dom.sessionAnswered.textContent = metrics.answered;
+  dom.sessionCorrect.textContent = metrics.correct;
+  dom.sessionWrong.textContent = metrics.wrong;
+  dom.sessionRemaining.textContent = metrics.remaining;
+
+  if (dom.sessionResultText) {
+    dom.sessionResultText.textContent = metrics.answered
+      ? `${metrics.correct} đúng • ${metrics.wrong} sai`
+      : "Chưa trả lời";
+  }
+
+  if (dom.jumpInput) {
+    dom.jumpInput.max = metrics.total || 1;
+    dom.jumpInput.placeholder = metrics.total ? `1 - ${metrics.total}` : "1";
+  }
 }
 
 function getCurrentQuestion() {
@@ -927,6 +1245,10 @@ function getCurrentQuestion() {
 }
 
 function renderCurrentQuestion() {
+  if (!dom.questionTitle || !dom.questionSectionBadge || !dom.questionStatusBadge) {
+    return;
+  }
+
   const question = getCurrentQuestion();
   const total = state.session.questionIds.length;
 
@@ -1073,6 +1395,8 @@ function renderCurrentQuestion() {
 }
 
 function renderNavigator() {
+  if (!dom.questionNavigator) return;
+
   dom.questionNavigator.innerHTML = "";
 
   state.session.questionIds.forEach((id, index) => {
@@ -1186,6 +1510,8 @@ function goToQuestion(index) {
 }
 
 function jumpToPosition() {
+  if (!dom.jumpInput) return;
+
   const total = state.session.questionIds.length;
   if (!total) return;
 
@@ -1232,6 +1558,8 @@ function handleKeyboard(event) {
 }
 
 function renderAssetNotes() {
+  if (!dom.assetNotesList) return;
+
   dom.assetNotesList.innerHTML = "";
 
   assetNotes.forEach((item) => {
@@ -1247,13 +1575,12 @@ function renderAssetNotes() {
 }
 
 function exportData() {
+  if (!dom.syncDataBox || !dom.syncMessage) return;
+
   const payload = {
     app: "TinHoc11-HK2-TracNghiem",
-    version: APP_VERSION,
     exportedAt: new Date().toISOString(),
-    questionStats: state.questionStats,
-    settings: state.settings,
-    session: state.session,
+    ...getPersistedState(),
   };
 
   dom.syncDataBox.value = JSON.stringify(payload, null, 2);
@@ -1262,6 +1589,8 @@ function exportData() {
 }
 
 async function copyData() {
+  if (!dom.syncDataBox || !dom.syncMessage) return;
+
   if (!dom.syncDataBox.value.trim()) {
     exportData();
   }
@@ -1269,20 +1598,31 @@ async function copyData() {
   const text = dom.syncDataBox.value;
 
   try {
-    await navigator.clipboard.writeText(text);
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      dom.syncDataBox.focus();
+      dom.syncDataBox.select();
+      dom.syncDataBox.setSelectionRange(0, dom.syncDataBox.value.length);
+      const copied = document.execCommand("copy");
+      if (!copied) {
+        throw new Error("copy_failed");
+      }
+    }
+
     dom.syncMessage.textContent = "Đã copy dữ liệu vào clipboard.";
     showToast("Đã copy dữ liệu.", "success");
   } catch (error) {
     dom.syncDataBox.focus();
     dom.syncDataBox.select();
     dom.syncDataBox.setSelectionRange(0, dom.syncDataBox.value.length);
-    document.execCommand("copy");
-    dom.syncMessage.textContent = "Đã copy dữ liệu vào clipboard.";
-    showToast("Đã copy dữ liệu.", "success");
+    showToast("Không thể copy tự động. Đoạn JSON đã được bôi chọn để bạn copy thủ công.", "info");
   }
 }
 
 function importData() {
+  if (!dom.syncDataBox || !dom.syncMessage) return;
+
   const raw = dom.syncDataBox.value.trim();
 
   if (!raw) {
@@ -1313,8 +1653,8 @@ function importData() {
 
   saveState();
 
-  if (!state.session.questionIds.length) {
-    buildSession();
+  if (currentPage === "practice" && !state.session.questionIds.length) {
+    buildSession(null, { notify: false, scroll: false });
   } else {
     renderAll();
   }
@@ -1329,12 +1669,28 @@ function resetAllProgress() {
   }
 
   state = createDefaultState();
-  dom.syncDataBox.value = "";
-  dom.syncMessage.textContent = "Đã xóa toàn bộ tiến trình.";
-  buildSession();
+
+  if (dom.syncDataBox) {
+    dom.syncDataBox.value = "";
+  }
+
+  if (dom.syncMessage) {
+    dom.syncMessage.textContent = "Đã xóa toàn bộ tiến trình.";
+  }
+
+  if (currentPage === "practice") {
+    buildSession(null, { notify: false, scroll: false });
+  } else {
+    saveState();
+    renderAll();
+  }
+
+  showToast("Đã xóa toàn bộ tiến trình.", "success");
 }
 
 function showToast(message, type = "info") {
+  if (!dom.toast) return;
+
   clearTimeout(toastTimer);
 
   dom.toast.textContent = message;

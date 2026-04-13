@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Làm bài | Ôn tập Tin học 11 HK2</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="practice">
+  <main class="shell">
+    <header class="site-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">11</span>
+        <div>
+          <p class="brand-kicker">Tin học 11 • Học kỳ 2</p>
+          <p class="brand-name">Ôn tập trắc nghiệm</p>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Điều hướng chính">
+        <a class="nav-link" data-page-link="home" href="index.html">Trang chủ</a>
+        <a class="nav-link" data-page-link="practice" href="lam-bai.html">Làm bài</a>
+        <a class="nav-link" data-page-link="stats" href="thong-ke.html">Thống kê</a>
+        <a class="nav-link" data-page-link="data" href="du-lieu.html">Dữ liệu</a>
+      </nav>
+    </header>
+
+    <section class="page-heading">
+      <div>
+        <p class="section-label">Trang làm bài</p>
+        <h1>Tập trung vào phiên học hiện tại.</h1>
+        <p class="lead-text">
+          Chỉ giữ phần thiết lập, câu hỏi và điều hướng của lượt đang làm để giao diện gọn hơn.
+        </p>
+      </div>
+
+      <div class="action-row">
+        <a class="btn btn-secondary" href="thong-ke.html">Xem thống kê</a>
+        <a class="btn btn-ghost" href="du-lieu.html">Mở dữ liệu</a>
+      </div>
+    </section>
+
+    <div class="practice-layout">
+      <section class="stack-column">
+        <section class="card control-panel">
+          <div class="card-heading align-start">
+            <div>
+              <p class="section-label">Thiết lập</p>
+              <h2>Tạo lượt học</h2>
+            </div>
+          </div>
+
+          <p id="sessionMetaText" class="muted-text">
+            Dữ liệu được lưu tự động trên trình duyệt này.
+          </p>
+
+          <div id="sectionChips" class="section-chips"></div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Chế độ luyện</span>
+              <select id="modeSelect">
+                <option value="smart">Thông minh</option>
+                <option value="all">Tất cả câu trong phần</option>
+                <option value="unseen">Chỉ câu chưa học</option>
+                <option value="review">Chỉ câu cần ôn</option>
+                <option value="learning">Chỉ câu đang học</option>
+                <option value="mastered">Chỉ câu đã chắc</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Số câu cho lượt này</span>
+              <select id="countSelect">
+                <option value="10">10 câu</option>
+                <option value="15">15 câu</option>
+                <option value="20">20 câu</option>
+                <option value="30">30 câu</option>
+                <option value="40">40 câu</option>
+                <option value="all">Tất cả câu trong phần</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <label class="toggle-chip">
+              <input type="checkbox" id="shuffleToggle" />
+              <span>Đảo câu hỏi</span>
+            </label>
+          </div>
+
+          <div class="action-row">
+            <button id="buildSessionBtn" class="btn btn-primary" type="button">
+              Áp dụng và tạo lượt học
+            </button>
+            <button id="continueSmartBtn" class="btn btn-secondary" type="button">
+              10 câu ưu tiên
+            </button>
+          </div>
+        </section>
+
+        <article class="card question-panel">
+          <div class="question-head">
+            <div class="badge-row">
+              <span id="questionSectionBadge" class="badge badge-accent">Phần</span>
+              <span id="questionStatusBadge" class="badge">Trạng thái</span>
+            </div>
+            <div class="question-position">
+              <span id="currentIndexLabel">0</span>/<span id="totalCountLabel">0</span>
+            </div>
+          </div>
+
+          <div class="reading-progress">
+            <div id="sessionProgressBar"></div>
+          </div>
+
+          <h2 id="questionTitle" class="question-title">Đang tải câu hỏi...</h2>
+
+          <pre id="questionCode" class="question-code hidden"></pre>
+
+          <div id="questionImageWrap" class="question-image-wrap hidden">
+            <img id="questionImage" alt="Ảnh minh họa câu hỏi" />
+          </div>
+
+          <div id="questionImageNote" class="inline-note warning hidden"></div>
+          <div id="questionNote" class="inline-note hidden"></div>
+
+          <div id="optionsList" class="options-list"></div>
+
+          <div id="feedbackBox" class="feedback-box hidden"></div>
+
+          <div class="question-actions">
+            <button id="prevBtn" class="btn btn-ghost" type="button">Câu trước</button>
+            <button id="toggleReviewBtn" class="btn btn-secondary" type="button">
+              Đánh dấu cần ôn
+            </button>
+            <button id="nextBtn" class="btn btn-primary" type="button">Câu tiếp</button>
+          </div>
+        </article>
+      </section>
+
+      <aside class="stack-column">
+        <section class="card">
+          <div class="card-heading">
+            <div>
+              <p class="section-label">Phiên hiện tại</p>
+              <h2>Tiến trình lượt học</h2>
+            </div>
+            <span id="sessionResultText" class="mini-pill">Chưa trả lời</span>
+          </div>
+
+          <div class="session-overview">
+            <article class="mini-card">
+              <span>Đã trả lời</span>
+              <strong id="sessionAnswered">0</strong>
+            </article>
+            <article class="mini-card">
+              <span>Đúng</span>
+              <strong id="sessionCorrect">0</strong>
+            </article>
+            <article class="mini-card">
+              <span>Sai</span>
+              <strong id="sessionWrong">0</strong>
+            </article>
+            <article class="mini-card">
+              <span>Còn lại</span>
+              <strong id="sessionRemaining">0</strong>
+            </article>
+          </div>
+
+          <div id="questionNavigator" class="navigator-grid"></div>
+
+          <div class="jump-row">
+            <input
+              id="jumpInput"
+              type="number"
+              min="1"
+              placeholder="Đi tới vị trí trong lượt"
+            />
+            <button id="jumpBtn" class="btn btn-secondary" type="button">Đi đến</button>
+          </div>
+        </section>
+
+        <section class="card help-card">
+          <div class="card-heading align-start">
+            <div>
+              <p class="section-label">Mẹo nhanh</p>
+              <h2>Phím tắt</h2>
+            </div>
+          </div>
+
+          <ul class="plain-list">
+            <li>Nhấn A, B, C, D để chọn đáp án.</li>
+            <li>Dùng phím mũi tên trái và phải để chuyển câu.</li>
+            <li>Nút đánh dấu cần ôn giúp đẩy câu hỏi lên ưu tiên ở các lượt sau.</li>
+            <li>Chế độ thông minh sẽ ưu tiên câu chưa học và câu sai gần đây.</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="site-footer">
+      Phần làm bài được tách riêng để giữ luồng làm bài rõ ràng hơn trên mọi màn hình.
+    </footer>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="javascript.js"></script>
+</body>
+</html>
