@@ -332,8 +332,9 @@
     {
       "number": 55,
       "question": "Câu 55. Giả sử có hai mảng Ten và Diem tương ứng với dữ liệu tên và điểm của học sinh trong lớp. Chương trình sau ghi những dòng thông tin này ra tệp ʺoutput.txtʺ sau đây lỗi ở mấy dòng?",
+      "code": "tep = \"output.txt\"\nTen = [\"Hà\", \"Bình\", \"Quang\"]\nDiem = [9.5, 6.5, 7.4]\n\nf = open(tep, \"w\", encoding=\"UTF-8\")\n\nfor i in range(len(Ten)):\n    print(Ten[i], Diem[i], file=f)\n\nf.close()",
       "options": ["A. 0.", "B. 1.", "C. 2.", "D. 3."],
-      "answer": "C"
+      "answer": "A"
     },
     {
       "number": 56,
@@ -463,7 +464,8 @@
     },
     {
       "number": 77,
-      "question": "Câu 77. \nTìm kết quả ở vòng lặp 3 trong đoạn chương trình sau khi ta nhập dayso = .",
+      "question": "Câu 77.\nTìm kết quả ở vòng lặp 3 trong đoạn chương trình sau khi ta nhập dayso = \"5 8 0 10 4 3\".",
+      "code": "dayso = input('Nhập dãy số, mỗi số cách nhau một dấu cách: ')\nA = [int(x) for x in dayso.split()]\nprint('A = ', A)\n\nn = len(A)\n\ndef sapxepchen(A):\n    for i in range(1, n):\n        value = A[i]\n        j = i - 1\n        while j >= 0 and A[j] > value:\n            A[j+1] = A[j]\n            j = j - 1\n        A[j+1] = value\n        print('Sau vòng ', i, 'thì A = ', A, '=> điểm dừng j = ', j)\n        print(' j = ', j)\n\nsapxepchen(A)",
       "options": ["A. Sau vòng  3 thì A =  [5, 8, 0, 10, 4, 3] => điểm dừng j =  0", "B. Sau vòng  3 thì A =  [0, 5, 8, 10, 4, 3] => điểm dừng j =  -1", "C. Sau vòng  3 thì A =  [0, 5, 8, 10, 4, 3] => điểm dừng j =  2", "D. Sau vòng  3 thì A =  [0, 4, 5, 8, 10, 3] => điểm dừng j =  0"],
       "answer": "C"
     },
@@ -476,12 +478,14 @@
     {
       "number": 79,
       "question": "Câu 79. Chương trình giải bài toán đếm số các ước số thực sự của số tự nhiên n này đúng hay sai? Nếu sai thì sửa như sau:",
+      "code": "def dem(n):\n    count = 0\n    k = 2\n    while k <= n:\n        if n % k == 0:\n            count = count + 1\n        k = k + 1\n    return count\n\nkq = dem(4)\nprint(kq)",
       "options": ["A. Sai, sửa dòng 3 là k = 1.", "B. Sai, sửa dòng 4 là k < n.", "C. Sai, sửa dòng 3 là k = 1 và dòng 4 là k < n .", "D. Đúng."],
       "answer": "A"
     },
     {
       "number": 80,
       "question": "Câu 80. Tìm lệnh còn thiếu trong chương trình xuất thời gian của thuật toán tìm kiếm tuần tự phần tử K = 9 của dãy số A sau.",
+      "code": "from time import perf_counter\n\ndef LinearSearch(A, K):\n    for i in range(len(A)):\n        if A[i] == K:\n            return i\n    return -1\n\nA = [3, 1, 0, 10, 13, 16, 9, 7, 5, 11]\n\nt1 = perf_counter()\n# ....................................\nt2 = perf_counter()\n\nprint(\"Thời gian tìm kiếm tuần tự: \", t2 - t1)",
       "options": ["A. TKTT(A,9).", "B. LinearSearch(A).", "C. LinearSearch(A,9).", "D. linearsearch(A,9)."],
       "answer": "C"
     }

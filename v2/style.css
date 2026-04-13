@@ -358,6 +358,25 @@ button {
   tab-size: 4;
 }
 
+.question-stem {
+  white-space: pre-wrap;
+}
+
+.question-code {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-x: auto;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 13.5px;
+  line-height: 1.6;
+  tab-size: 4;
+}
+
 .options {
   flex: 0 1 auto;
   overflow: auto;
@@ -653,6 +672,10 @@ button {
     line-height: 1.5;
   }
 
+  .question-code {
+    font-size: 12.5px;
+  }
+
   .option-btn {
     padding: 11px 12px;
     font-size: 13.5px;
@@ -688,6 +711,11 @@ button {
   .question-text {
     font-size: 14px;
     line-height: 1.45;
+  }
+
+  .question-code {
+    font-size: 12px;
+    line-height: 1.5;
   }
 
   .option-btn {

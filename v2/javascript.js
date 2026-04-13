@@ -101,6 +101,7 @@ function parseQuestion(rawQuestion) {
   return {
     number: Number(rawQuestion?.number),
     question: String(rawQuestion?.question || ""),
+    code: String(rawQuestion?.code || ""),
     options: options.map((option, index) => ({
       key: optionKey(option) || DISPLAY_KEYS[index] || String(index + 1),
       text: optionText(option) || String(option || "")
@@ -343,7 +344,19 @@ function renderQuestion() {
   els.qNumber.textContent = `Câu ${question.number}`;
   els.answerChip.hidden = !revealed;
   els.answerChip.textContent = `Đáp án: ${answerDisplayKey(question)}`;
-  els.questionText.textContent = question.question;
+  els.questionText.innerHTML = "";
+  const stem = document.createElement("div");
+  stem.className = "question-stem";
+  stem.textContent = question.question;
+  els.questionText.appendChild(stem);
+
+  if (question.code) {
+    const codeBlock = document.createElement("pre");
+    codeBlock.className = "question-code";
+    codeBlock.textContent = question.code;
+    els.questionText.appendChild(codeBlock);
+  }
+
   els.questionText.scrollTop = 0;
 
   const fragment = document.createDocumentFragment();
