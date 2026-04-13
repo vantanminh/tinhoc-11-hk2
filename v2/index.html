@@ -16,7 +16,22 @@
 
       <div class="tools">
         <button class="tool-btn mobile-only" id="openPaletteBtn" type="button">1–80</button>
-        <button class="tool-btn" id="toggleAnswerBtn" type="button" aria-pressed="false">Đáp án</button>
+        <label class="tool-field mode-field" for="revealModeSelect">
+          <span class="tool-label">Hiện đáp án</span>
+          <select class="tool-select" id="revealModeSelect">
+            <option value="submit">Cuối bài</option>
+            <option value="instant">Chọn xong</option>
+          </select>
+        </label>
+        <button class="tool-btn accent" id="submitBtn" type="button">Nộp bài</button>
+        <label class="toggle-chip" for="shuffleQuestionsToggle">
+          <input id="shuffleQuestionsToggle" type="checkbox" />
+          <span>Đảo câu</span>
+        </label>
+        <label class="toggle-chip" for="shuffleOptionsToggle">
+          <input id="shuffleOptionsToggle" type="checkbox" />
+          <span>Đảo đáp án</span>
+        </label>
         <div class="summary" id="summary">0/80</div>
         <button class="tool-btn danger" id="resetBtn" type="button" title="Xóa toàn bộ lựa chọn">Làm lại</button>
       </div>
