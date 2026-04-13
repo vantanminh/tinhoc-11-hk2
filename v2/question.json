@@ -696,6 +696,126 @@
       "question": "Bài 23. Câu 10. Phương pháp quy nạp toán học thường được sử dụng để làm gì trong kiểm thử chương trình?",
       "options": ["A. Để tìm và sửa lỗi trong mã lệnh.", "B. Để chứng minh tính đúng của thuật toán.", "C. Để đo độ phức tạp của chương trình.", "D. Để đánh giá dung lượng bộ nhớ sử dụng."],
       "answer": "B"
+    },
+    {
+      "number": 115,
+      "question": "Bài 20. Câu 1. Trong Python, lệnh nào sau đây dùng để mở tệp văn bản data.txt để ghi thêm dữ liệu mà không xóa nội dung cũ?",
+      "options": ["A. f = open(\"data.txt\", \"r\", encoding=\"UTF-8\").", "B. f = open(\"data.txt\", \"w\", encoding=\"UTF-8\").", "C. f = open(\"data.txt\", \"a\", encoding=\"UTF-8\").", "D. f = open(\"data.txt\", \"x\", encoding=\"UTF-8\")."],
+      "answer": "C"
+    },
+    {
+      "number": 116,
+      "question": "Bài 20. Câu 2. Khi mở tệp bằng lệnh f = open(\"data.txt\", \"r\"), Python sẽ thực hiện điều gì?",
+      "options": ["A. Mở tệp để ghi dữ liệu từ đầu.", "B. Mở tệp để ghi thêm dữ liệu.", "C. Mở tệp để đọc dữ liệu.", "D. Mở tệp nếu tệp không tồn tại."],
+      "answer": "C"
+    },
+    {
+      "number": 117,
+      "question": "Bài 20. Câu 3. Câu lệnh f.close() có tác dụng gì trong Python?",
+      "options": ["A. Đóng tệp sau khi hoàn tất việc đọc hoặc ghi.", "B. Xóa nội dung của tệp.", "C. Ghi dữ liệu ra tệp.", "D. Mở tệp để đọc."],
+      "answer": "A"
+    },
+    {
+      "number": 118,
+      "question": "Bài 20. Câu 4. Lệnh print(TenHS[i], DiemHS[i], file=f) dùng để:",
+      "options": ["A. Hiển thị dữ liệu trên màn hình.", "B. Ghi dữ liệu vào tệp.", "C. Xóa dữ liệu trong tệp.", "D. Tạo một tệp mới."],
+      "answer": "B"
+    },
+    {
+      "number": 119,
+      "question": "Bài 20. Câu 5. Câu lệnh line.split() trong Python có chức năng gì?",
+      "options": ["A. Tách một dòng thành danh sách các phần tử dựa trên dấu cách.", "B. Xóa dòng trong tệp.", "C. Ghi một dòng vào tệp.", "D. Tạo một dòng mới trong tệp."],
+      "answer": "A"
+    },
+    {
+      "number": 120,
+      "question": "Bài 20. Câu 6. Thuật toán nào được sử dụng để tăng tốc độ tìm kiếm trong tệp đã được sắp xếp theo thứ tự tăng dần?",
+      "options": ["A. Tìm kiếm tuần tự.", "B. Tìm kiếm nhị phân.", "C. Tìm kiếm mờ.", "D. Tìm kiếm tuyến tính."],
+      "answer": "B"
+    },
+    {
+      "number": 121,
+      "question": "Bài 20. Câu 7. Khi tìm kiếm tên học sinh trong danh sách, nếu tên học sinh không tồn tại, chương trình sẽ:",
+      "options": ["A. Ghi lại tên vào danh sách.", "B. Thông báo \"Không tìm thấy dữ liệu của học sinh\".", "C. Ghi lại điểm số của học sinh đó.", "D. Xóa tên học sinh khỏi danh sách."],
+      "answer": "B"
+    },
+    {
+      "number": 122,
+      "question": "Bài 20. Câu 8. Trong thuật toán tìm kiếm nhị phân, điều kiện nào quyết định quá trình tìm kiếm tiếp theo?",
+      "options": ["A. Vị trí giữa của danh sách so sánh với giá trị cần tìm.", "B. Giá trị đầu tiên của danh sách.", "C. Giá trị cuối cùng của danh sách.", "D. Tổng số phần tử trong danh sách."],
+      "answer": "A"
+    },
+    {
+      "number": 123,
+      "question": "Bài 20. Câu 9. Khi sử dụng lệnh f.readlines(), kết quả trả về là:",
+      "options": ["A. Một danh sách các dòng trong tệp.", "B. Một danh sách các ký tự trong tệp.", "C. Một chuỗi chứa toàn bộ nội dung tệp.", "D. Một số nguyên đếm số dòng trong tệp."],
+      "answer": "A"
+    },
+    {
+      "number": 124,
+      "question": "Bài 20. Câu 10. Trong bài toán tra cứu điểm thi, nếu người dùng nhập từ khóa \"end\", chương trình sẽ:",
+      "options": ["A. Kết thúc quá trình tra cứu.", "B. Xóa dữ liệu của học sinh.", "C. In ra danh sách học sinh.", "D. Ghi lại tên học sinh cuối cùng."],
+      "answer": "A"
+    },
+    {
+      "number": 125,
+      "question": "Bài 22. Câu 1. Thuật toán nào phù hợp nhất để sắp xếp số lượng các mặt hàng trong kho theo thứ tự tăng dần?",
+      "options": ["A. Thuật toán nổi bọt.", "B. Thuật toán sắp xếp chọn.", "C. Thuật toán sắp xếp chèn.", "D. Thuật toán sắp xếp nhanh."],
+      "answer": "C"
+    },
+    {
+      "number": 126,
+      "question": "Bài 22. Câu 2. Trong thuật toán sắp xếp chèn, tại sao chúng ta phải dịch chuyển các phần tử lớn hơn giá trị đang xét lên một vị trí?",
+      "options": ["A. Để tìm vị trí chính xác của phần tử mới.", "B. Để giảm số lần so sánh.", "C. Để giảm số lần trao đổi.", "D. Để tăng tốc độ sắp xếp."],
+      "answer": "A"
+    },
+    {
+      "number": 127,
+      "question": "Bài 22. Câu 3. Trong nhiệm vụ 2, thuật toán nào được sử dụng để sắp xếp điểm trung bình môn Tin học theo thứ tự giảm dần?",
+      "options": ["A. Thuật toán sắp xếp chèn.", "B. Thuật toán sắp xếp chọn.", "C. Thuật toán nổi bọt.", "D. Thuật toán sắp xếp nhanh."],
+      "answer": "B"
+    },
+    {
+      "number": 128,
+      "question": "Bài 22. Câu 4. Dòng lệnh nào trong nhiệm vụ 1 dùng để thêm số lượng mặt hàng vào danh sách soluong_ds?",
+      "options": ["A. soluong_ds.append(int(line)).", "B. soluong_ds = [int(line)].", "C. soluong_ds.insert(line).", "D. soluong_ds.remove(line)."],
+      "answer": "A"
+    },
+    {
+      "number": 129,
+      "question": "Bài 22. Câu 5. Trong thuật toán sắp xếp chọn, mục đích của biến Max là gì?",
+      "options": ["A. Lưu giá trị nhỏ nhất của dãy.", "B. Lưu chỉ số của phần tử có giá trị lớn nhất trong dãy.", "C. Lưu chỉ số của phần tử có giá trị nhỏ nhất trong dãy.", "D. Xác định chỉ số cuối của dãy."],
+      "answer": "B"
+    },
+    {
+      "number": 130,
+      "question": "Bài 22. Câu 6. Trong nhiệm vụ 1, hàm InsertionSort(soluong_ds) thực hiện chức năng gì?",
+      "options": ["A. Thực hiện sắp xếp nổi bọt danh sách.", "B. Sắp xếp danh sách theo thứ tự tăng dần.", "C. Sắp xếp danh sách theo thứ tự giảm dần.", "D. Đọc dữ liệu từ tệp và in danh sách."],
+      "answer": "B"
+    },
+    {
+      "number": 131,
+      "question": "Bài 22. Câu 7. Khi nào chúng ta sử dụng thuật toán sắp xếp nổi bọt?",
+      "options": ["A. Khi số lượng phần tử trong danh sách rất lớn.", "B. Khi cần sắp xếp một danh sách ngẫu nhiên có số lượng nhỏ hoặc trung bình.", "C. Khi không yêu cầu hiệu suất cao.", "D. Khi danh sách đã được sắp xếp hoàn toàn."],
+      "answer": "C"
+    },
+    {
+      "number": 132,
+      "question": "Bài 22. Câu 8. Trong nhiệm vụ 2, việc sắp xếp điểm trung bình theo thứ tự giảm dần có thể thực hiện bằng cách nào?",
+      "options": ["A. Tìm phần tử nhỏ nhất và đưa về đầu danh sách.", "B. Tìm phần tử lớn nhất và đưa về cuối danh sách.", "C. Tìm phần tử lớn nhất và đưa về đầu danh sách.", "D. Không cần thực hiện sắp xếp."],
+      "answer": "C"
+    },
+    {
+      "number": 133,
+      "question": "Bài 22. Câu 9. Dòng lệnh nào sẽ hiển thị danh sách điểm trung bình đã sắp xếp từ cao đến thấp?",
+      "options": ["A. print('Danh sách điểm theo thứ tự tăng dần là:').", "B. print('Danh sách điểm theo thứ tự giảm dần là:').", "C. print('Danh sách điểm trung bình là:').", "D. print('Danh sách điểm đã sắp xếp:')."],
+      "answer": "B"
+    },
+    {
+      "number": 134,
+      "question": "Bài 22. Câu 10. Phát biểu nào sau đây đúng về thuật toán chèn trong sắp xếp danh sách?",
+      "options": ["A. Luôn tìm phần tử lớn nhất và đưa về đầu danh sách.", "B. Thực hiện dịch chuyển phần tử lớn hơn sang phải để tạo khoảng trống cho phần tử chèn vào.", "C. Thực hiện hoán đổi phần tử ở vị trí đầu và cuối.", "D. Thực hiện sắp xếp dãy theo thứ tự ngẫu nhiên."],
+      "answer": "B"
     }
   ]
 }
