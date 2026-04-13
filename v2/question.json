@@ -797,7 +797,7 @@
       "number": 131,
       "question": "Bài 22. Câu 7. Khi nào chúng ta sử dụng thuật toán sắp xếp nổi bọt?",
       "options": ["A. Khi số lượng phần tử trong danh sách rất lớn.", "B. Khi cần sắp xếp một danh sách ngẫu nhiên có số lượng nhỏ hoặc trung bình.", "C. Khi không yêu cầu hiệu suất cao.", "D. Khi danh sách đã được sắp xếp hoàn toàn."],
-      "answer": "C"
+      "answer": "B"
     },
     {
       "number": 132,
