@@ -2,6 +2,60 @@
 
 const STORAGE_KEY = "tin11_hk2_mcq_v1";
 const DISPLAY_KEYS = ["A", "B", "C", "D", "E", "F"];
+const PYTHON_KEYWORDS = new Set([
+  "and",
+  "as",
+  "break",
+  "class",
+  "continue",
+  "def",
+  "elif",
+  "else",
+  "except",
+  "False",
+  "finally",
+  "for",
+  "from",
+  "if",
+  "import",
+  "in",
+  "is",
+  "None",
+  "not",
+  "or",
+  "pass",
+  "return",
+  "True",
+  "try",
+  "while",
+  "with"
+]);
+const PYTHON_BUILTINS = new Set([
+  "dict",
+  "enumerate",
+  "float",
+  "input",
+  "int",
+  "len",
+  "list",
+  "max",
+  "min",
+  "open",
+  "perf_counter",
+  "print",
+  "range",
+  "set",
+  "str",
+  "sum",
+  "tuple"
+]);
+const INLINE_CODE_PATTERNS = [
+  /\b[A-Za-z_]\w*(?:\.\w+)+\([^()\n]{0,120}\)/g,
+  /\b(?:print|len|range|input|open|int|float|str|sum|max|min|list|dict|set|tuple|enumerate)\([^()\n]{0,120}\)/g,
+  /\b[A-Za-z_]\w*\[[^\]\n]{1,60}\]/g,
+  /\b[A-Za-z_]\w*\s*=\s*\[[^\n]{1,120}\]/g,
+  /\b[A-Za-z_]\w*\s*=\s*\([^\n]{1,120}?\)\s*(?:\/\/|[+\-*/%])\s*[-\w.]+/g
+];
 
 const els = {
   examTitle: document.getElementById("examTitle"),
@@ -108,6 +162,202 @@ function parseQuestion(rawQuestion) {
     })),
     answer: String(rawQuestion?.answer || "").trim().toUpperCase()
   };
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function highlightCode(code) {
+  const source = String(code || "");
+  const tokenPattern = /("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(#.*$)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
+  let html = "";
+  let lastIndex = 0;
+
+  source.replace(tokenPattern, (match, stringToken, commentToken, numberToken, wordToken, offset) => {
+    html += escapeHtml(source.slice(lastIndex, offset));
+
+    if (stringToken) {
+      html += `<span class="code-token string">${escapeHtml(stringToken)}</span>`;
+    } else if (commentToken) {
+      html += `<span class="code-token comment">${escapeHtml(commentToken)}</span>`;
+    } else if (numberToken) {
+      html += `<span class="code-token number">${numberToken}</span>`;
+    } else if (wordToken) {
+      if (PYTHON_KEYWORDS.has(wordToken)) {
+        html += `<span class="code-token keyword">${wordToken}</span>`;
+      } else if (PYTHON_BUILTINS.has(wordToken)) {
+        html += `<span class="code-token builtin">${wordToken}</span>`;
+      } else {
+        html += escapeHtml(wordToken);
+      }
+    } else {
+      html += escapeHtml(match);
+    }
+
+    lastIndex = offset + match.length;
+    return match;
+  });
+
+  html += escapeHtml(source.slice(lastIndex));
+  return html;
+}
+
+function collectInlineCodeRanges(text) {
+  const source = String(text || "");
+  const ranges = [];
+
+  INLINE_CODE_PATTERNS.forEach((pattern) => {
+    pattern.lastIndex = 0;
+
+    let match = pattern.exec(source);
+    while (match) {
+      let end = match.index + match[0].length;
+
+      while (end > match.index && /[.,;:!?]/.test(source[end - 1])) {
+        end -= 1;
+      }
+
+      if (end > match.index) {
+        ranges.push({ start: match.index, end });
+      }
+
+      match = pattern.exec(source);
+    }
+  });
+
+  ranges.sort((left, right) => left.start - right.start || right.end - left.end);
+
+  return ranges.reduce((merged, range) => {
+    const previous = merged[merged.length - 1];
+
+    if (!previous || range.start > previous.end) {
+      merged.push({ ...range });
+      return merged;
+    }
+
+    previous.end = Math.max(previous.end, range.end);
+    return merged;
+  }, []);
+}
+
+function formatInlineCode(text) {
+  const source = String(text || "");
+  const ranges = collectInlineCodeRanges(source);
+
+  if (!ranges.length) return escapeHtml(source);
+
+  let html = "";
+  let cursor = 0;
+
+  ranges.forEach((range) => {
+    html += escapeHtml(source.slice(cursor, range.start));
+    html += `<code class="inline-code">${escapeHtml(source.slice(range.start, range.end))}</code>`;
+    cursor = range.end;
+  });
+
+  html += escapeHtml(source.slice(cursor));
+  return html;
+}
+
+function looksLikeCodeLine(line) {
+  const trimmed = String(line || "").trim();
+
+  if (!trimmed) return false;
+
+  return (
+    /^(?:#|from\b|import\b|def\b|class\b|for\b|while\b|if\b|elif\b|else\b|return\b|print\b|input\b|open\b|del\b|break\b|continue\b|pass\b)/.test(trimmed) ||
+    /^[A-Za-z_]\w*\s*=\s*/.test(trimmed) ||
+    /^[A-Za-z_]\w*\.\w+\([^)]*\)\s*$/.test(trimmed) ||
+    /^[A-Za-z_]\w*(?:\[[^\]]+\])?\s*=\s*.+/.test(trimmed) ||
+    (/:[\s]*$/.test(trimmed) && /\b(?:for|while|if|elif|else|def|class)\b/.test(trimmed))
+  );
+}
+
+function looksLikeDataLine(line) {
+  const trimmed = String(line || "").trim();
+
+  if (!trimmed) return false;
+
+  return (
+    /^[A-Za-z0-9_.-]+\.txt$/i.test(trimmed) ||
+    (/^[\p{L}\d_.-]+(?:\s+[\p{L}\d_.-]+)+$/u.test(trimmed) && /\d/.test(trimmed))
+  );
+}
+
+function trimBlockContent(text) {
+  return String(text || "").replace(/^\n+|\n+$/g, "");
+}
+
+function splitQuestionBlocks(text) {
+  const source = String(text || "");
+  if (!source.trim()) return [];
+
+  const lines = source.split(/\r?\n/);
+  const blocks = [];
+  let textBuffer = [];
+  let codeBuffer = [];
+  let insideCode = false;
+
+  const flushText = () => {
+    const content = trimBlockContent(textBuffer.join("\n"));
+    if (content) blocks.push({ type: "text", content });
+    textBuffer = [];
+  };
+
+  const flushCode = () => {
+    const content = trimBlockContent(codeBuffer.join("\n"));
+    if (content) blocks.push({ type: "code", content });
+    codeBuffer = [];
+    insideCode = false;
+  };
+
+  lines.forEach((line) => {
+    const codeLike = looksLikeCodeLine(line);
+    const dataLike = looksLikeDataLine(line);
+    const keepWithCode = insideCode && (line.trim() === "" || line.startsWith(" ") || dataLike);
+
+    if (codeLike || keepWithCode) {
+      if (!insideCode) flushText();
+      codeBuffer.push(line);
+      insideCode = true;
+      return;
+    }
+
+    if (insideCode) flushCode();
+    textBuffer.push(line);
+  });
+
+  if (insideCode) {
+    flushCode();
+  } else {
+    flushText();
+  }
+
+  return blocks;
+}
+
+function createQuestionTextBlock(text) {
+  const block = document.createElement("div");
+  block.className = "question-stem";
+  block.innerHTML = formatInlineCode(text);
+  return block;
+}
+
+function createQuestionCodeBlock(code) {
+  const pre = document.createElement("pre");
+  const codeElement = document.createElement("code");
+
+  pre.className = "question-code";
+  codeElement.innerHTML = highlightCode(code);
+  pre.appendChild(codeElement);
+
+  return pre;
 }
 
 function shuffled(items) {
@@ -345,16 +595,18 @@ function renderQuestion() {
   els.answerChip.hidden = !revealed;
   els.answerChip.textContent = `Đáp án: ${answerDisplayKey(question)}`;
   els.questionText.innerHTML = "";
-  const stem = document.createElement("div");
-  stem.className = "question-stem";
-  stem.textContent = question.question;
-  els.questionText.appendChild(stem);
+  const questionBlocks = splitQuestionBlocks(question.question);
+
+  questionBlocks.forEach((block) => {
+    const element = block.type === "code"
+      ? createQuestionCodeBlock(block.content)
+      : createQuestionTextBlock(block.content);
+
+    els.questionText.appendChild(element);
+  });
 
   if (question.code) {
-    const codeBlock = document.createElement("pre");
-    codeBlock.className = "question-code";
-    codeBlock.textContent = question.code;
-    els.questionText.appendChild(codeBlock);
+    els.questionText.appendChild(createQuestionCodeBlock(question.code));
   }
 
   els.questionText.scrollTop = 0;
@@ -375,7 +627,7 @@ function renderQuestion() {
     label.textContent = DISPLAY_KEYS[index] || String(index + 1);
 
     copy.className = "option-copy";
-    copy.textContent = option.text;
+    copy.innerHTML = formatInlineCode(option.text);
 
     btn.append(label, copy);
 
