@@ -54,7 +54,7 @@
     "52": "Tham số mode trong `open()`: \"r\" = read (đọc), \"w\" = write (ghi mới, xóa cũ), \"a\" = append (ghi thêm). `f.close()` là đóng tệp.",
     "53": "`f.readline()` đọc 1 dòng tiếp theo. `f.readlines()` đọc tất cả thành list. `L = list(f)` cũng đọc toàn bộ. `f.close()` đóng tệp.",
     "54": "`L = line.split()` tách dòng 'Hà 9.6' thành ['Hà', '9.6']. Sau đó `L[0]` là tên, `L[1]` là điểm → `float(L[1])` = 9.6.",
-    "55": "Code đúng: mở file \"w\", dùng `for i in range(len(Ten))` ghi từng cặp tên-điểm bằng `print(..., file=f)`, rồi `f.close()`. Không có lỗi nào (0 lỗi).",
+    "55": "Code có 2 lỗi: (1) Dòng 3 – `Diem = [9.5; 6.5; 7.4]` dùng dấu `;` để ngăn cách phần tử trong list, phải thay bằng dấu `,`. (2) Dòng 6 – `print(..., fil = f)` viết sai tên tham số từ khóa, phải là `file = f`. Đáp án: 2 lỗi (dòng 3 và dòng 6).",
     "56": "Sắp xếp cần 2 thao tác cơ bản: (1) So sánh để biết thứ tự, (2) Đổi chỗ để đưa phần tử về đúng vị trí.",
     "57": "Sắp xếp nổi bọt hoạt động bằng cách Hoán đổi (swap) các phần tử kề nhau khi chúng sai thứ tự.",
     "58": "Dấu hiệu chưa xong: vẫn còn ít nhất 1 cặp phần tử liền kề không đúng thứ tự mong muốn → cần thêm vòng lặp.",

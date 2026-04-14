@@ -332,9 +332,9 @@
     {
       "number": 55,
       "question": "Câu 55. Giả sử có hai mảng Ten và Diem tương ứng với dữ liệu tên và điểm của học sinh trong lớp. Chương trình sau ghi những dòng thông tin này ra tệp ʺoutput.txtʺ sau đây lỗi ở mấy dòng?",
-      "code": "tep = \"output.txt\"\nTen = [\"Hà\", \"Bình\", \"Quang\"]\nDiem = [9.5, 6.5, 7.4]\n\nf = open(tep, \"w\", encoding=\"UTF-8\")\n\nfor i in range(len(Ten)):\n    print(Ten[i], Diem[i], file=f)\n\nf.close()",
+      "code": "tep = \"output.txt\"\nTen = [\"Hà\", \"Bình\", \"Quang\"]\nDiem = [9.5; 6.5; 7.4]\n\nf = open(tep, \"w\", encoding = \"UTF-8\")\n\nfor i in range(len(Ten)):\n    print(Ten[i], Diem[i], fil = f)\n\nf.close()",
       "options": ["A. 0.", "B. 1.", "C. 2.", "D. 3."],
-      "answer": "A"
+      "answer": "C"
     },
     {
       "number": 56,
